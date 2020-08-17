@@ -1,6 +1,6 @@
 import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity,TextInput } from 'react-native';
 
 import Colors from '../constants/Colors';
 import { MonoText } from './StyledText';
@@ -8,7 +8,17 @@ import { Text, View } from './Themed';
 
 export default function EditScreenInfo({ path }: { path: string }) {
   return (
-    <View>
+
+    <View style={styles.container}>
+      <TextInput  
+            style={styles.inputText}
+            placeholder="Email..." 
+            placeholderTextColor="#003f5c"
+           // onChangeText={text => this.setState({email:text})}
+            />
+
+    </View>
+  /*  <View>
       <View style={styles.getStartedContainer}>
         <Text
           style={styles.getStartedText}
@@ -40,6 +50,7 @@ export default function EditScreenInfo({ path }: { path: string }) {
         </TouchableOpacity>
       </View>
     </View>
+    */
   );
 }
 
@@ -48,11 +59,22 @@ function handleHelpPress() {
     'https://docs.expo.io/get-started/create-a-new-app/#opening-the-app-on-your-phonetablet'
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#003f5c',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  inputText:{
+    height:50,
+    color:"white"
+  },
+  logo:{
+    fontWeight:"bold",
+    fontSize:50,
+    color:"#fb5b5a",
+    marginBottom:40
   },
   developmentModeText: {
     marginBottom: 20,
@@ -106,3 +128,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
