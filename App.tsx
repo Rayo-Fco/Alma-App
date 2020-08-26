@@ -1,29 +1,29 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import 'react-native-gesture-handler';
 
-import useCachedResources from './hooks/useCachedResources';
-import useColorScheme from './hooks/useColorScheme';
-import Navigation from './navigation';
-import Inicio from './screens/Inicio'; 
+import React from 'react';
+import { AppLoading } from 'expo';
+import { StatusBar } from 'react-native';
+
+import { Roboto_400Regular, Roboto_500Medium, Roboto_700Bold, Roboto_300Light_Italic, useFonts} from '@expo-google-fonts/roboto';
+
+import Routes from './src/Routes';
 
 export default function App() {
-  const isLoadingComplete = useCachedResources();
-  const colorScheme = useColorScheme();
+  const [fontsLoaded] = useFonts({
+    Roboto_400Regular,
+    Roboto_500Medium,
+    Roboto_700Bold,
+    Roboto_300Light_Italic
+  });
 
-  if (!isLoadingComplete) {
-    return null;
-  } else {
-    return ( 
-      <Inicio>
-
-      </Inicio>
-     /* <SafeAreaProvider>
-        <Navigation colorScheme={colorScheme} />
-        <StatusBar /> 
-      </SafeAreaProvider>
-      */
-
-    );
+  if (!fontsLoaded) {
+    return <AppLoading />;
   }
+
+  return (
+    <>
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent />
+      <Routes />
+    </>
+  );
 }
