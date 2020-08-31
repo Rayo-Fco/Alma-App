@@ -11,15 +11,16 @@ import {
 
 
 import { useNavigation } from '@react-navigation/native';
+import { AuthNavigationProps } from "../../../Component/Navigation";
 
 import styles from './styles';
 
-const bgimagen = require('../../assets/Principal-Background.png')
-const logo = require('../../assets/Logo.png') 
+const bgimagen = require('../../../assets/Principal-Background.png')
+const logo = require('../../../assets/Logo.png') 
 
 
-const Principal = () => {
-  const navigation = useNavigation();
+const Principal = ({ navigation }: AuthNavigationProps<"Principal">) => {
+
   
   const NavigateToLogin = () => {
     navigation.navigate('Login');

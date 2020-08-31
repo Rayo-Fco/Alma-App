@@ -1,30 +1,26 @@
 import React from 'react';
-
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { AppRoutes } from '../Component/Navigation';
+import { NavigationContainer } from "@react-navigation/native";
 
-import Principal from '../pages/Principal';
-import Login from '../pages/Login'
-import Registro from '../pages/Registro'
+import { AuthNavigator } from '../Auth'
+import { HomeNavigator } from '../Home'
 
-const AppStack = createStackNavigator();
+
+const AppStack = createStackNavigator<AppRoutes>();
 
 const Routes = () => {
   return (
     <NavigationContainer>
-      <AppStack.Navigator
-        headerMode="none"
-        screenOptions={{
-          cardStyle: {
-            backgroundColor: '#f0f0f5',
-          },
-        }} 
-      >
-        <AppStack.Screen name="Principal" component={Principal} />
-        <AppStack.Screen name="Login" component={Login} />
-        <AppStack.Screen name="Registro" component={Registro}/>
-      </AppStack.Navigator>
+      <SafeAreaProvider>
+          <AppStack.Navigator headerMode="none">
+              <AppStack.Screen name="Home" component={HomeNavigator} />
+              <AppStack.Screen name="Auth" component={AuthNavigator} />
+            </AppStack.Navigator>
+      </SafeAreaProvider>
     </NavigationContainer>
+    
   );
 };
 

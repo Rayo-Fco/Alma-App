@@ -11,21 +11,24 @@ import {
   Platform,
   TextInput as RNTextInput  
 } from 'react-native';
-
-
-import { useNavigation } from '@react-navigation/native';
-
+import { CommonActions } from "@react-navigation/native";
 import styles from './styles';
 import { TextInput } from 'react-native-gesture-handler';
+import { AuthNavigationProps } from "../../../Component/Navigation";
 
-const fondo = require('../../assets/Login-Background.png')
+const fondo = require('../../../assets/Login-Background.png')
 
 
-const Login = () => {
+const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
   const password = useRef<RNTextInput>(null);
-
+  
   const ingresar = () =>{
-    Alert.alert('Simple Button pressed')
+      navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Auth" }],
+        })
+      )
   }
   return (
     

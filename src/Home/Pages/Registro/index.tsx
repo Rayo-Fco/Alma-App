@@ -16,12 +16,13 @@ import { useNavigation } from '@react-navigation/native';
 
 import styles from './styles';
 import { TextInput } from 'react-native-gesture-handler';
+import { AuthNavigationProps } from "../../../Component/Navigation";
 
-const fondo = require('../../assets/App-Background.png')
+const fondo = require('../../../assets/App-Background.png')
 
 
 
-const Registro = () => {
+const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
   const name = useRef<RNTextInput>(null);
   const lastname = useRef<RNTextInput>(null);
   const email = useRef<RNTextInput>(null);
