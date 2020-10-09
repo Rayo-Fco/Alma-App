@@ -20,7 +20,7 @@ const CheckIn = ({navigation}:HomeNavigationProps<'Check'>)=> {
   const NavigateToPrincipal =() =>{
    }
   
-  
+   
 
     return (
       

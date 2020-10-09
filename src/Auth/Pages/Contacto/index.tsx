@@ -15,11 +15,6 @@ const header = require('../../../assets/Header-Background.png')
 import { HomeNavigationProps } from "../../../Component/Navigation";
 import { useNavigation } from '@react-navigation/native';
 
-
-    
-   
- 
-
 const ContactoSeguridad = ({ navigation }: HomeNavigationProps<"Contacto">)=> {
   const navi = useNavigation();
   
@@ -47,7 +42,7 @@ const ContactoSeguridad = ({ navigation }: HomeNavigationProps<"Contacto">)=> {
            
           </View>
       </View>
-      
+       
       
     );
 };

@@ -19,4 +19,4 @@ export const AuthNavigator = () => {
       <Drawer.Screen name="Contacto" component={Contacto} />
     </Drawer.Navigator>
   )
-}
+} 
