@@ -15,20 +15,52 @@ import { CommonActions } from "@react-navigation/native";
 import styles from './styles';
 import { TextInput } from 'react-native-gesture-handler';
 import { AuthNavigationProps } from "../../../Component/Navigation";
+import { Icon } from "react-native-elements";
 
 const fondo = require('../../../assets/Login-Background.png')
 
 
 const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
-  const password = useRef<RNTextInput>(null);
-  
+  const password2 = useRef<RNTextInput>(null);
+  const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
   const ingresar = () =>{
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: "Auth" }],
-        })
-      )
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Auth" }],
+      })
+    )
+    if( password == '' || email =='')
+    {
+       Alert.alert("Llene el Email o Password")
+    }else{
+      let correo = /^(?:[^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*|"[^\n"]+")@(?:[^<>()[\].,;:\s@"]+\.)+[^<>()[\]\.,;:\s@"]{2,63}$/i
+      let pass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$/
+      if(!correo.test(email))
+      {
+        Alert.alert("Email invalido")
+      }
+      else{
+          if(!pass.test(password))
+          {
+            Alert.alert("Contraseña invalida")
+          }
+          else
+          {
+              navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: "Auth" }],
+                })
+              )
+          }
+      }
+    }
+
   }
   return (
     
@@ -50,19 +82,30 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
             placeholderTextColor={'#FC8EED'}
             returnKeyType="next"
             style={styles.Input}
-            onSubmitEditing={() => password.current?.focus()}
+            value={email}
+            onSubmitEditing={() => password2.current?.focus()}
+            onChangeText={(text) => setEmail(text)}
           ></TextInput>
-          <TextInput 
-            placeholder={'Contraseña'}
-            placeholderTextColor={'#FC8EED'}
-            style={styles.Input}
-            ref={password} 
-            returnKeyType="done"
-            onSubmitEditing={() => ingresar()}
-            secureTextEntry
-          ></TextInput>
+          <View style={styles.passwordContainer}>
+              <TextInput
+                placeholder={'Ingrese su Contraseña'}
+                placeholderTextColor={'#FC8EED'}
+                style={styles.inputStyle}
+                  autoCorrect={false}
+                  secureTextEntry={showPassword ? false : true}
+                  value={password}
+                  onChangeText={(text) => setPassword(text)}
+                />
+              <Icon
+                    type="material-community"
+                    name={showPassword ? "eye-off-outline" : "eye-outline"}
+                    iconStyle={styles.IcoPassword}
+                    onPress={() => setShowPassword(!showPassword)}
+                  />
+            </View>
+          
       </View>
-      <TouchableHighlight style={styles.BtnIngresar} onPress={ingresar}>
+      <TouchableHighlight style={styles.BtnIngresar} onPress={ingresar}  >
           <Text style={styles.TextBtnIngresar}>Ingresar</Text>
       </TouchableHighlight>
       

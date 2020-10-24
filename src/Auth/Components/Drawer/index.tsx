@@ -6,34 +6,41 @@ const Drawer = () => {
     const navigation = useNavigation();
   
     return (
-        <View>
+        <View style={{backgroundColor:"#FDCFF7", height:"100%", paddingLeft:20}}> 
             <TouchableHighlight style={{
                 height: 54,
                 width:314,
-                borderRadius:22,
-                marginTop:150,
-                backgroundColor : "#FC7EEB",
+                marginTop:300,
+                backgroundColor : "#FEE7FB",
                 }}  onPress ={() => navigation.dispatch(DrawerActions.closeDrawer())} >
-                <Text>Cerrar Menu</Text>
+                <Text>Mi Perfil</Text>
             </TouchableHighlight>
             <TouchableHighlight style={{
                 height: 54,
                 width:314,
-                borderRadius:22,
-                marginTop:150,
-                backgroundColor : "#FC7EEB",
-                }}  onPress ={() => navigation.navigate('Check')} >
-                <Text>Check</Text>
-            </TouchableHighlight>
-            <TouchableHighlight style={{
-                height: 54,
-                width:314,
-                borderRadius:22,
-                marginTop:150,
-                backgroundColor : "#FC7EEB",
-                }}  onPress ={() => navigation.navigate('Contacto')} >
+                marginTop:40,
+                backgroundColor : "#FEE7FB",
+                }}  onPress ={() => navigation.navigate('Contacto',{ initial: false}) }>
                 <Text>Contacto de Seguridad</Text>
             </TouchableHighlight>
+            <TouchableHighlight style={{
+                height: 54,
+                width:314,
+                marginTop:40,
+                backgroundColor : "#FEE7FB",
+                }}  onPress ={() => navigation.navigate('Check')} >
+                <Text>Check In de Seguridad</Text>
+            </TouchableHighlight>
+            <TouchableHighlight style={{
+                height: 54,
+                width:314,
+                marginTop:40,
+                backgroundColor : "#FEE7FB",
+                marginBottom:100
+                }}  onPress ={() => navigation.navigate('Contacto')} >
+                <Text>Seguimiento en Vivo</Text>
+            </TouchableHighlight>
+            <Text>Cerrar Sesion</Text>
         </View>
     )
   }

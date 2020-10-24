@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto_300Light_Italic',
     fontSize: 23,
     borderBottomColor:'#FC6EE9',
+    color:'#FC6EE9',
     borderBottomWidth:3,
     width:330,
   },
@@ -48,12 +49,37 @@ const styles = StyleSheet.create({
     alignItems:'center',
     paddingTop:12
   },
+  BtnIngresarDisabled:{
+    height: 54,
+    width:314,
+    borderRadius:22,
+    marginTop:30,
+    backgroundColor : "#FCA5F0",
+    alignItems:'center',
+    paddingTop:12
+  },
   TextBtnIngresar:{
     fontFamily: 'Roboto_500Medium',
     fontSize:25,
     color:'white'
   },
-  
+  passwordContainer: {
+    flexDirection: 'row',
+    paddingBottom: 10,
+  },
+  inputStyle: {
+    flex: 1,
+    marginTop:30,
+    marginRight:10,
+    fontFamily: 'Roboto_300Light_Italic',
+    fontSize: 23,
+    borderBottomColor:'#FC6EE9',
+    color:'#FC6EE9',
+    borderBottomWidth:3,
+  },
+  IcoPassword:{
+    color: "#FC8EED",marginTop:30
+  }
 
 });
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, ComponentFactory,Component } from 'react';
+import React, { useState, useEffect, ComponentFactory,Component, useContext, createContext} from 'react';
 import {
   View,
   ImageBackground,
@@ -7,31 +7,72 @@ import {
   Text,
   TouchableHighlight,
   Alert,
-  Button
+  Button,
+  ImageProps
 } from 'react-native';
 import {CommonActions} from '@react-navigation/native'
+import { HomeNavigationProps } from "../../../Component/Navigation"
 import styles from './styles';
+
 import Mapa from '../../Components/Maps'
 import Info from '../../Components/Info'
-import { HomeNavigationProps } from "../../../Component/Navigation";
+import CheckIn from '../../Components/CheckIn';
+/* import MenuContext from '../Context'
+const { StateMenu, setStateMenu} = useContext(MenuContext)  */
 const header = require('../../../assets/Header-Background.png')
+
+
 const menu1 = require('../../../assets/menu/1.png')
+const menu2 = require('../../../assets/menu/2.png')
+const menu3 = require('../../../assets/menu/3.png')
 
 
-   
- 
 
-const Inicio = ({ navigation }: HomeNavigationProps<"Inicio">)=> {
+const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
+
   
 
+  /* console.log('Provide'+StateMenu); */
+  const [Barra, setBarra] = useState<string>("Principal");
+
+  const [ImgMenu,setImgMenu] = useState<ImageProps>(menu2)
+
+  useEffect(()=>{
+    if(route.params){ 
+       setBarra("Principal")
+       setImgMenu(menu2)
+    }
+  },[route.params])
+  
+  
  const NavigateToPrincipal =() =>{
-  navigation.dispatch(CommonActions.reset({
-    index: 0,
-    routes: [{ name: 'Home' }]
-  }))
+    setImgMenu(menu2)
+    setBarra("Principal")
   }
-  const NavigateToRegistro = () => {
-  } 
+  const NavigateToInfo =() =>{
+    setImgMenu(menu3)
+    setBarra("Info")
+  }
+  const NavigateToCheck =() =>{
+    setImgMenu(menu1)
+    setBarra("Check")
+  }
+ 
+
+  const Container = ()=>{
+    switch (Barra) {
+      case "Info":
+          return <Info></Info>
+      break;
+      case "Check":
+          return <CheckIn></CheckIn>
+      break;
+    
+      default:
+          return <View></View>
+      break;
+    }
+  }
 
     return (
       
@@ -44,25 +85,25 @@ const Inicio = ({ navigation }: HomeNavigationProps<"Inicio">)=> {
           
           <View style={styles.MapsContainer}>
             
-            <Mapa></Mapa>
-              
+           <Mapa></Mapa>
+           
           </View>
-          <Info></Info> 
+          <Container/>
           <View style={styles.MenuContainer}>
-            <Image source={menu1} style={styles.MenuImage as ImageStyle} ></Image>
+            <Image source={ImgMenu} style={styles.MenuImage as ImageStyle} ></Image>
             <View style={styles.MenuBottom}>
-              <TouchableHighlight style={{backgroundColor:"#466584", width:80, marginRight:45}} onPress={NavigateToPrincipal}>
-                  <Text >Cerrar Sesion</Text>
+              <TouchableHighlight underlayColor={"transparent"} style={{backgroundColor:"transparent", width:80, marginRight:45}} onPress={NavigateToCheck}>
+                  <Text ></Text>
               </TouchableHighlight>
-              <TouchableHighlight style={{backgroundColor:"red", width:80}}onPress={NavigateToRegistro}>
-                <Text >menu</Text>
+              <TouchableHighlight underlayColor={"transparent"} style={{backgroundColor:"transparent",  width:80}}onPress={NavigateToPrincipal}>
+                <Text ></Text>
               </TouchableHighlight>
-              <TouchableHighlight style={{backgroundColor:"#88858445",width:80,marginLeft:45}} onPress={NavigateToRegistro}>
-                  <Text >menu</Text>
+              <TouchableHighlight underlayColor={"transparent"} style={{backgroundColor:"transparent", width:80,marginLeft:45}} onPress={NavigateToInfo}>
+                  <Text ></Text>
               </TouchableHighlight>
             </View>
             
-          </View>
+         </View>
       </View>
       
     );
