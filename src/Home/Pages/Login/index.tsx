@@ -1,4 +1,4 @@
-import React, { useState,useRef } from 'react';
+import React, { useState,useRef, useEffect } from 'react';
 import {
   View,
   ImageBackground,
@@ -16,24 +16,21 @@ import styles from './styles';
 import { TextInput } from 'react-native-gesture-handler';
 import { AuthNavigationProps } from "../../../Component/Navigation";
 import { Icon } from "react-native-elements";
-
+import api from '../../../Services/api';
+import Loading from '../../../Component/Loading'
 const fondo = require('../../../assets/Login-Background.png')
 
 
 const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
   const password2 = useRef<RNTextInput>(null);
+  const email2 = useRef<RNTextInput>(null);
   const [loading, setLoading] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const ingresar = () =>{
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "Auth" }],
-      })
-    )
     if( password == '' || email =='')
     {
        Alert.alert("Llene el Email o Password")
@@ -51,12 +48,36 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
           }
           else
           {
-              navigation.dispatch(
-                CommonActions.reset({
-                  index: 0,
-                  routes: [{ name: "Auth" }],
+                setLoading(true)
+                api.post('/login',{ password: password, email: email }).then((response)=>{
+                  console.log(response.data.token);
+                  setLoading(false)
+                  navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [{ name: "Auth" }],
+                    })
+                  )
+                }).catch((err)=>{
+                  setTimeout(()=>{
+                    setLoading(false)
+                  },200)
+                   setTimeout(()=>{
+                    if(!err.response) {  
+                      return Alert.alert('Contactar a Soporte de Alma')
+                    }
+                    else{
+                      let error = { message:"Contacta a Soporte de Alma" }
+                      error = err.response.data.error[0]
+                       return Alert.alert(error.message)
+                    }
+                   }, 300)
+                  
+                  
                 })
-              )
+
+
+              
           }
       }
     }
@@ -85,6 +106,10 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
             value={email}
             onSubmitEditing={() => password2.current?.focus()}
             onChangeText={(text) => setEmail(text)}
+            ref={email2}
+            keyboardType="email-address"
+            maxLength={60}
+            spellCheck={false}
           ></TextInput>
           <View style={styles.passwordContainer}>
               <TextInput
@@ -95,6 +120,11 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
                   secureTextEntry={showPassword ? false : true}
                   value={password}
                   onChangeText={(text) => setPassword(text)}
+                  ref={password2}
+                  onSubmitEditing={ingresar}
+                  keyboardType="default"
+                  maxLength={30}
+                  spellCheck={false}
                 />
               <Icon
                     type="material-community"
@@ -108,7 +138,7 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
       <TouchableHighlight style={styles.BtnIngresar} onPress={ingresar}  >
           <Text style={styles.TextBtnIngresar}>Ingresar</Text>
       </TouchableHighlight>
-      
+      <Loading isVisible={loading} text={"Iniciando Session"}></Loading>
       </View>
    </ImageBackground>
    </KeyboardAvoidingView>

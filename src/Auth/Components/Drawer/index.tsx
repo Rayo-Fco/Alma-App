@@ -1,9 +1,19 @@
 import React from 'react';
 import { TouchableHighlight,Text,View} from 'react-native';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
- 
+import { CommonActions } from "@react-navigation/native";
+
 const Drawer = () => {
     const navigation = useNavigation();
+
+    const CerrarSession = () =>{
+        navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "Home" }],
+            })
+          )
+    }
   
     return (
         <View style={{backgroundColor:"#FDCFF7", height:"100%", paddingLeft:20}}> 
@@ -40,7 +50,7 @@ const Drawer = () => {
                 }}  onPress ={() => navigation.navigate('Contacto')} >
                 <Text>Seguimiento en Vivo</Text>
             </TouchableHighlight>
-            <Text>Cerrar Sesion</Text>
+            <Text onPress={CerrarSession}>Cerrar Sesion</Text>
         </View>
     )
   }

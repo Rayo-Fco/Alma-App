@@ -23,22 +23,32 @@ const fondo = require('../../../assets/App-Background.png')
 
 
 const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
-  const name = useRef<RNTextInput>(null);
-  const lastname = useRef<RNTextInput>(null);
-  const email = useRef<RNTextInput>(null);
-  const dni = useRef<RNTextInput>(null);
-  const phone = useRef<RNTextInput>(null);
-  const password = useRef<RNTextInput>(null);
-  const confirmPassword = useRef<RNTextInput>(null);
-  const politicas = useRef(null)
+  const name2 = useRef<RNTextInput>(null);
+  const lastname2 = useRef<RNTextInput>(null);
+  const email2 = useRef<RNTextInput>(null);
+  const dni2 = useRef<RNTextInput>(null);
+  const phone2 = useRef<RNTextInput>(null);
+  const password2= useRef<RNTextInput>(null);
+  const confirmPassword2 = useRef<RNTextInput>(null);
+  const politicas2 = useRef(null)
 
   const [modalVisible, setModalVisible] = useState(false);
   const [isSelected, setSelection] = useState(false);
-
+  const [name,setName] = useState('')
+  const [,] = useState('')
+  const [,] = useState('')
+  const [,] = useState('')
+  const [,] = useState('')
+  const [,] = useState('')
+  const [,] = useState('')
+  const [,] = useState('')
 
   const registro = () => {
+    /* if(isEmpty()){
+      Alert.alert('Llene todos los campos')
+    } */
     if (isSelected) {
-      Alert.alert('ingreso')
+      /// Alert.alert('ingreso')
     } else {
       Alert.alert('Para Registrarse', 'Hola, tienes que aceptar las politicas de privacidad de alma')
     }
@@ -63,32 +73,34 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                 placeholderTextColor={'#FC8EED'}
                 style={styles.Input}
                 returnKeyType={"next"}
-                onSubmitEditing={() => lastname.current?.focus()}
+                onSubmitEditing={() => lastname2.current?.focus()}
                 autoCompleteType="name"
+                value={name}
+                onChangeText={(text)=> setName(text)}
               />
               <TextInput
                 placeholder={'Apellidos'}
                 placeholderTextColor={'#FC8EED'}
                 style={styles.Input}
                 returnKeyType={"next"}
-                onSubmitEditing={() => dni.current?.focus()}
-                ref={lastname}
+                onSubmitEditing={() => dni2.current?.focus()}
+                ref={lastname2}
               />
               <TextInput
                 placeholder={'Rut'}
                 placeholderTextColor={'#FC8EED'}
                 style={styles.Input}
                 returnKeyType={"next"}
-                onSubmitEditing={() => phone.current?.focus()}
-                ref={dni}
+                onSubmitEditing={() => phone2.current?.focus()}
+                ref={dni2}
               />
               <TextInput
                 placeholder={'Telefono'}
                 placeholderTextColor={'#FC8EED'}
                 style={styles.Input}
                 returnKeyType={"next"}
-                onSubmitEditing={() => email.current?.focus()}
-                ref={phone}
+                onSubmitEditing={() => email2.current?.focus()}
+                ref={phone2}
                 autoCompleteType="tel"
               />
               <TextInput
@@ -96,8 +108,8 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                 placeholderTextColor={'#FC8EED'}
                 style={styles.Input}
                 returnKeyType={"next"}
-                onSubmitEditing={() => password.current?.focus()}
-                ref={email}
+                onSubmitEditing={() => password2.current?.focus()}
+                ref={email2}
                 autoCompleteType="email"
               />
               <TextInput
@@ -105,8 +117,8 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                 placeholderTextColor={'#FC8EED'}
                 style={styles.Input}
                 returnKeyType={"next"}
-                onSubmitEditing={() => confirmPassword.current?.focus()}
-                ref={password}
+                onSubmitEditing={() => confirmPassword2.current?.focus()}
+                ref={password2}
               />
               <TextInput
                 placeholder={'Repita la Contraseña'}
@@ -114,7 +126,7 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                 style={styles.Input}
                 returnKeyType={"done"}
                 onSubmitEditing={() => registro()}
-                ref={confirmPassword}
+                ref={confirmPassword2}
 
               />
               <View style={styles.politicaContainer}>
