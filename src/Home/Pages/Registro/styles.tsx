@@ -114,7 +114,40 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto_700Bold',
     textDecorationLine:"underline",
     color:"blue"
-  }
+  },
+  phoneContainer: {
+    flexDirection: 'row',
+    borderBottomColor:'#FC6EE9',
+    borderBottomWidth:3,
+  },
+  textphone:{
+    marginTop:20,
+    marginRight:10,
+    fontFamily: 'Roboto_500Medium',
+    fontSize: 23,
+  },
+  Inputphone:{
+    marginTop:20,
+    fontFamily: 'Roboto_300Light_Italic',
+    fontSize: 23,
+    width:280,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+  },
+  IcoPassword:{
+    color: "#FC8EED",
+    marginTop:25,
+    marginLeft:5
+  },
+  Inputpassword:{
+    marginTop:20,
+    fontFamily: 'Roboto_300Light_Italic',
+    fontSize: 23,
+    borderBottomColor:'#FC6EE9',
+    borderBottomWidth:3,
+    width:300,
+  },
 
 
   
