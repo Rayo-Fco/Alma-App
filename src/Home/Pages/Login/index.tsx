@@ -9,7 +9,7 @@ import {
   Alert,
   KeyboardAvoidingView,
   Platform,
-  TextInput as RNTextInput  
+  TextInput as RNTextInput,  
 } from 'react-native';
 import { CommonActions } from "@react-navigation/native";
 import styles from './styles';
