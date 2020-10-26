@@ -17,8 +17,8 @@ import styles from './styles';
 import Mapa from '../../Components/Maps'
 import Info from '../../Components/Info'
 import CheckIn from '../../Components/CheckIn';
-/* import MenuContext from '../Context'
-const { StateMenu, setStateMenu} = useContext(MenuContext)  */
+
+
 const header = require('../../../assets/Header-Background.png')
 
 
@@ -29,7 +29,8 @@ const menu3 = require('../../../assets/menu/3.png')
 
 
 const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
-
+  const [info, setInfo] = useState(false);
+  const [checkin, setCheckin] = useState(false);
   
 
   /* console.log('Provide'+StateMenu); */
@@ -39,6 +40,7 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
 
   useEffect(()=>{
     if(route.params){ 
+      Limpiar()
        setBarra("Principal")
        setImgMenu(menu2)
     }
@@ -46,33 +48,28 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
   
   
  const NavigateToPrincipal =() =>{
+    Limpiar()
     setImgMenu(menu2)
     setBarra("Principal")
   }
   const NavigateToInfo =() =>{
+    Limpiar()
+    setInfo(true)
     setImgMenu(menu3)
     setBarra("Info")
   }
   const NavigateToCheck =() =>{
+    Limpiar()
+    setCheckin(true)
     setImgMenu(menu1)
     setBarra("Check")
   }
  
-
-  const Container = ()=>{
-    switch (Barra) {
-      case "Info":
-          return <Info></Info>
-      break;
-      case "Check":
-          return <CheckIn></CheckIn>
-      break;
-    
-      default:
-          return <View></View>
-      break;
-    }
+  const Limpiar = () =>{
+    setCheckin(false)
+    setInfo(false)
   }
+
 
     return (
       
@@ -88,7 +85,9 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
            <Mapa></Mapa>
            
           </View>
-          <Container/>
+          <Info isVisible={info}></Info> 
+          <CheckIn isVisible={checkin}></CheckIn> 
+
           <View style={styles.MenuContainer}>
             <Image source={ImgMenu} style={styles.MenuImage as ImageStyle} ></Image>
             <View style={styles.MenuBottom}>

@@ -18,6 +18,7 @@ import { AuthNavigationProps } from "../../../Component/Navigation";
 import { Icon } from "react-native-elements";
 import api from '../../../Services/api';
 import Loading from '../../../Component/Loading'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const fondo = require('../../../assets/Login-Background.png')
 
 
@@ -29,6 +30,10 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  
+
+
+
 
   const ingresar = () =>{
     if( password == '' || email =='')
@@ -49,8 +54,10 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
           else
           {
                 setLoading(true)
-                api.post('/login',{ password: password, email: email }).then((response)=>{
-                  console.log(response.data.token);
+                api.post('/login',{ password: password, email: email }).then(async(response)=>{
+                  await AsyncStorage.setItem('@storage_Alma', JSON.stringify(response.data.token)).catch((e)=>{
+                    console.log("error"+e);
+                  })
                   setLoading(false)
                   navigation.dispatch(
                     CommonActions.reset({

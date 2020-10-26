@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { Icon } from "react-native-elements";
 import styles from './styles';
+import axios from 'axios';
 
 import * as Location from 'expo-location';
 import api from '../../../Services/api';
@@ -27,9 +28,21 @@ let infocomuna = {
   comuna: '',
   phone: ''
 }
+let LocationData ={
+  latitude:"", 
+  longitude:""
+}
+
+interface Props{
+  isVisible: boolean,
+}
 
 
+const Prueba =(props:Props) =>{
+const { isVisible } = props;
 
+const [comuna, setComuna] = useState<Comuna>(infocomuna)
+const [location,setLocation] = useState<Location>(LocationData)
 
 const llamada = (phone:string) =>{
   let numero = phone
@@ -51,35 +64,36 @@ const llamada = (phone:string) =>{
     .catch(err => console.log(err));
 }
 
-const Info = () =>{
-
-const [comuna, setComuna] = useState<Comuna>(infocomuna)
-
 const getLocation = async () =>{
   await Location.getLastKnownPositionAsync().then((data)=>{
-    console.log(data.coords.latitude);
     let position = {
       latitude: data.coords.latitude.toString(),
       longitude: data.coords.longitude.toString()
     }
-    getComuna(position)
+    setLocation(position)
+    return getComuna(position)
   })
   }
 
-  const getComuna = (info:Location) =>{
-    api.post('/checkpoint',{ latitude: info.latitude, longitude: info.longitude}).then((response)=>{
+  const getComuna = async (info:Location) =>{
+   await api.post('/checkpoint',{ latitude: info.latitude, longitude: info.longitude}).then((response)=>{
       setComuna(response.data)
     }).catch((err)=>{
       console.log(err.details);
       setComuna(err.details)
     })
   } 
-
-useEffect(()=>{
+  
+  useEffect(()=>{
+    
+    if(isVisible){
       getLocation()
-},[])
+    }
+  },[isVisible])
+
 
 const Container = ()=>{
+
   if(!comuna) {
     return (
     <View style={styles.countContainer}>
@@ -118,18 +132,24 @@ const Container = ()=>{
         break;
       }
     }
+  }
 
-    
-  
-}
 
-  return (
+  if(isVisible){
+    return(
     <View style={styles.container}>
         <Container></Container>
-    </View>
-  );
+    </View>)
+    
+  }
+  else
+  {
+    return (<View></View>) 
+  }
 }
+    
+  
 
 
 
-export default Info
+export default Prueba

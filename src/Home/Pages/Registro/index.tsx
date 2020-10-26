@@ -33,8 +33,6 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
   const name2 = useRef<RNTextInput>(null);
   const lastname2 = useRef<RNTextInput>(null);
   const email2 = useRef<RNTextInput>(null);
-  let dni2 = useRef();
-
   const phone2 = useRef<RNTextInput>(null);
   const password2= useRef<RNTextInput>(null);
   const confirmPassword2 = useRef<RNTextInput>(null);
@@ -52,12 +50,7 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
   const [phone,setPhone] = useState('')
   const [confirmPassword,setConfirmPassword] = useState('')
 
-  const dnifocus = () => {
-    if(dni2.current) {
-          // @ts-ignore 
-          dni2.current._inputElement.focus()
-    }
-  }
+  
 
 
 

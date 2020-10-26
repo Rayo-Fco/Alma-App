@@ -2,11 +2,19 @@ import React from 'react';
 import { TouchableHighlight,Text,View} from 'react-native';
 import { useNavigation, DrawerActions } from '@react-navigation/native';
 import { CommonActions } from "@react-navigation/native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Drawer = () => {
     const navigation = useNavigation();
 
-    const CerrarSession = () =>{
+    const CerrarSession = async() =>{
+        try {
+            await AsyncStorage.removeItem('@storage_Alma')
+          } 
+          catch(e) 
+          {
+            console.log("Error remover");
+          }
         navigation.dispatch(
             CommonActions.reset({
               index: 0,

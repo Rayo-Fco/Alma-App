@@ -8,7 +8,9 @@ import {
   TouchableHighlight,
   Alert,
   Button,
-  ImageProps
+  ImageProps,
+  TouchableWithoutFeedback,
+  TextInput
 } from 'react-native';
 import styles from './styles';
 
@@ -18,6 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import Info from '../../Components/Info'
 import CheckIn from '../../Components/CheckIn';
+import { Input } from 'native-base';
 
 const menu1 = require('../../../assets/menu/1.png')
 const menu2 = require('../../../assets/menu/x.png')
@@ -27,40 +30,46 @@ const menu3 = require('../../../assets/menu/3.png')
 const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
   const [Barra, setBarra] = useState<string>("Principal");
   const [ImgMenu,setImgMenu] = useState<ImageProps>(menu2)
-  const navig = useNavigation();
-  
+  const [info, setInfo] = useState(false);
+  const [checkin, setCheckin] = useState(false);
   
 
- const NavigateToPrincipal =() =>{
+  const navig = useNavigation();
+  
+  const cerrar = async()=>{
+      Limpiar()
+      setImgMenu(menu2)
+      setBarra('Principal')
+  }
+
+ const NavigateToPrincipal = async() =>{
+    Limpiar()
     setImgMenu(menu2)
     setBarra("Principal")
     navig.navigate("Inicio",{ PropsMenu:"Principal"})
+    
+    
   }
   const NavigateToInfo =() =>{
+    Limpiar()
+    setInfo(true)
     setImgMenu(menu3)
     setBarra("Info")
   }
   const NavigateToCheck =() =>{
+    Limpiar()
+    setCheckin(true)
     setImgMenu(menu1)
     setBarra("Check")
+  }
+
+  const Limpiar = () =>{
+    setCheckin(false)
+    setInfo(false)
   }
  
 
 
-  const Container = ()=>{
-    switch (Barra) {
-      case "Info":
-          return <Info></Info>
-      break;
-      case "Check":
-          return <CheckIn></CheckIn>
-      break;
-    
-      default:
-          return <View></View>
-      break;
-    }
-  }
   
 
     return (
@@ -68,10 +77,35 @@ const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
       <View style={styles.PrincipalContainer}> 
       
           <Image source={header} style={styles.BackgroundContainer as ImageStyle}  ></Image>
+          <TouchableWithoutFeedback onPress={cerrar}>
           <View style={styles.MapsContainer}>
             <Text>Contacto seguridad</Text>
+            <Text>Contacto seguridad</Text>
+            <Text>Contacto seguridad</Text>
+            <TextInput 
+            placeholder={'Correo Electronico'}
+            placeholderTextColor={'#FC8EED'}
+            returnKeyType="next"
+            style={{marginTop:30,
+              fontFamily: 'Roboto_300Light_Italic',
+              fontSize: 23,
+              borderBottomColor:'#FC6EE9',
+              color:'#FC6EE9',
+              borderBottomWidth:3,
+              width:330,}}
+            keyboardType="email-address"
+            maxLength={60}
+            spellCheck={false}
+          ></TextInput>
+            <View style={{backgroundColor:"red",width:150,height:80}}></View>
+            <Text style={{color:"red",fontSize:50,}}>Contacto seguridad</Text>
           </View>
-          <Container/>
+          </TouchableWithoutFeedback>
+          
+          <Info isVisible={info}></Info>
+          <CheckIn isVisible={checkin}></CheckIn>
+
+
           <View style={styles.MenuContainer}>
             <Image source={ImgMenu} style={styles.MenuImage as ImageStyle} ></Image>
             <View style={styles.MenuBottom}>

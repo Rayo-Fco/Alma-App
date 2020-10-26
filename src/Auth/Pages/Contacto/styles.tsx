@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
   },
   MapsContainer:{
     flex: 1,
-    backgroundColor:"red",
+   // backgroundColor:"red",
+   paddingTop:230,
     width:"100%",
     height:"100%",
 

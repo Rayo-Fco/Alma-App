@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   ImageBackground,
@@ -6,13 +6,13 @@ import {
   ImageStyle,
   Text,
   TouchableHighlight,
-  Alert,
+  Alert
 } from 'react-native';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { useNavigation } from '@react-navigation/native';
 import { AuthNavigationProps } from "../../../Component/Navigation";
-
+import { CommonActions } from "@react-navigation/native";
 import styles from './styles';
 
 const bgimagen = require('../../../assets/Principal-Background.png')
@@ -20,7 +20,36 @@ const logo = require('../../../assets/Logo.png')
 
 
 const Principal = ({ navigation }: AuthNavigationProps<"Principal">) => {
-
+  const storeData = async () => {
+      await AsyncStorage.getItem('@storage_Alma').then(async (response)=>{
+          let data = response
+          if(data){
+            console.log(JSON.parse(data))
+            navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: "Auth" }],
+              })
+            )
+          }
+          else
+          {
+            try {
+              await AsyncStorage.removeItem('@storage_Alma')
+            } 
+            catch(e) 
+            {
+              console.log("Error remover");
+            }
+          }
+      }).catch(async()=>{
+        await AsyncStorage.setItem('@storage_Alma', 'Prueba')
+      })
+    
+  }
+  useEffect(()=>{
+    storeData()
+  },[])
   
   const NavigateToLogin = () => {
     navigation.navigate('Login');
