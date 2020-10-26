@@ -55,7 +55,10 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
           {
                 setLoading(true)
                 api.post('/login',{ password: password, email: email }).then(async(response)=>{
-                  await AsyncStorage.setItem('@storage_Alma', JSON.stringify(response.data.token)).catch((e)=>{
+                  let token={
+                    token:response.data.token
+                  }
+                  await AsyncStorage.setItem('@storage_Alma', JSON.stringify(token)).catch((e)=>{
                     console.log("error"+e);
                   })
                   setLoading(false)

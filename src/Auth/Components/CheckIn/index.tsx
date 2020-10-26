@@ -13,31 +13,92 @@ import {
   ScrollViewComponent,
 } from 'react-native';
 //import { TextInput } from 'react-native-gesture-handler';
-
+import Loading from '../../../Component/Loading'
 import styles from './styles';
+import api from '../../../Services/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as Location from 'expo-location';
 
 interface Location {
-    latitude:number, 
-    longitude:number,
-    latitudeDelta:number,
-    longitudeDelta:number
+    latitude:string, 
+    longitude:string
 }
-
- 
-let region = {
-  latitude: 0,
-  longitude: 0,
-  latitudeDelta: 0.015,
-  longitudeDelta: 0.015
+let LocationData ={
+  latitude:"", 
+  longitude:""
 }
 interface Props{
   isVisible: boolean,
 }
+
  const CheckIn = (props:Props) =>{
-  const { isVisible } = props;
+  let { isVisible } = props;
 
-
+  
   const Container = ()=>{
+    const [loading, setLoading] = useState(false);
+    const [numero_depto, setNumero_depto] = useState('');
+    const [numero_piso, setNumero_piso] = useState('');
+    const [extra, setExtra] = useState('');
+   
+
+    const [location,setLocation] = useState<Location>(LocationData)
+    const Envio = async()=>{
+      setLoading(true) 
+      await Location.getLastKnownPositionAsync().then(async(data)=>{
+        let position = {
+          latitude: data.coords.latitude.toString(),
+          longitude: data.coords.longitude.toString()
+        }
+          await AsyncStorage.getItem('@storage_Alma').then((data)=>{
+            interface p{
+              token:string
+            }
+            //@ts-ignore
+            let response:p = JSON.parse(data)
+            let token = response.token
+            api.post('/checkin',{ numero_depto: numero_depto, numero_piso: numero_piso,extra:extra, latitude:position.latitude, longitude: position.longitude },
+            {
+              headers: 
+              { 
+                Authorization: "Bearer "+token
+              }
+            }).then(()=>{
+              setLoading(false)
+              /* 
+              isVisible = false */
+            }).catch((err)=>{
+                setTimeout(()=>{setLoading(false)},200)
+               setTimeout(()=>{
+                
+                if(!err.response || err.response.data == "Unauthorized") {  
+                  return Alert.alert('Contactar a Soporte de Alma')
+                }
+                else{
+                  let error:[{message:string}] = err.response.data.error
+                  let err2 = ""
+                  error.map((err)=>{
+                    err2 = err2+"\n* "+ err.message
+                })
+                    Alert.alert("Error",err2)
+                }
+               }, 300)
+              
+              
+            })
+          })
+        })
+          
+        
+      
+
+      
+      
+        
+        
+        
+    }
+
     return (
       <KeyboardAvoidingView
     style={{ bottom:100,position:"absolute",width:"100%" }}
@@ -66,12 +127,14 @@ interface Props{
             returnKeyType="send"
             />
             <TouchableHighlight style={styles.Btn} >
-              <Text style={styles.TextBtn}>Check In</Text>
+              <Text style={styles.TextBtn} onPress={Envio}>Check In</Text>
             </TouchableHighlight>
           </View>
           
           </ScrollView>
+          <Loading isVisible={loading} text={"Cargando..."}></Loading>
         </KeyboardAvoidingView>
+        
     );
   }
 
