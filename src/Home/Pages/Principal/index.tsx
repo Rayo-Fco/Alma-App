@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native';
 import { AuthNavigationProps } from "../../../Component/Navigation";
 import { CommonActions } from "@react-navigation/native";
 import styles from './styles';
+import SafeAreaView from 'react-native-safe-area-view';
 
 const bgimagen = require('../../../assets/Principal-Background.png')
 const logo = require('../../../assets/Logo.png') 
@@ -59,22 +60,24 @@ const Principal = ({ navigation }: AuthNavigationProps<"Principal">) => {
   }
 
   return (
-   <ImageBackground source={bgimagen} style={styles.BackgroundContainer} >
-     <View style={styles.LogoContainer}> 
-       <Image source={logo} style={styles.Logo as ImageStyle} ></Image> 
-     </View>
-     <View style={styles.PrincipalContainer}> 
-       <Text style={styles.TextoBienvenida}>¡Hola! Bienvenida</Text>
-     
-     <TouchableHighlight style={styles.BtnRegistrar} onPress={NavigateToRegistro}>
-        <Text style={styles.TextBtnRegistrar}>Registrarse</Text>
-     </TouchableHighlight>
-     
-      <TouchableHighlight style={styles.BtnIniciar} onPress={NavigateToLogin}>
-          <Text style={styles.TextBtnIniciar}>Iniciar Sesión</Text>
+    <ImageBackground source={bgimagen} style={styles.BackgroundContainer} >
+      
+      <View style={styles.LogoContainer}> 
+        <Image source={logo} style={styles.Logo as ImageStyle} ></Image> 
+      </View>
+      <View style={styles.PrincipalContainer}> 
+        <Text style={styles.TextoBienvenida} maxFontSizeMultiplier={1}>¡Hola! Bienvenida</Text>
+      
+      <TouchableHighlight style={styles.BtnRegistrar} onPress={NavigateToRegistro}>
+          <Text style={styles.TextBtnRegistrar} maxFontSizeMultiplier={1}>Registrarse</Text>
       </TouchableHighlight>
-     </View>
-   </ImageBackground>
+      
+        <TouchableHighlight style={styles.BtnIniciar} onPress={NavigateToLogin}>
+            <Text style={styles.TextBtnIniciar} maxFontSizeMultiplier={1}>Iniciar Sesión</Text>
+        </TouchableHighlight>
+      </View>
+      
+    </ImageBackground>
   );
 };
 

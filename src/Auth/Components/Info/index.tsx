@@ -97,27 +97,27 @@ const Container = ()=>{
   if(!comuna) {
     return (
     <View style={styles.countContainer}>
-        <Text style={styles.disponible}>Problemas, Contactar a Soporte</Text>
+        <Text style={styles.disponible} maxFontSizeMultiplier={1}>Problemas, Contactar a Soporte</Text>
     </View>)
     }else{
       switch (comuna.comuna) {
         case "xxx":
           return (
             <View style={styles.countContainer}>
-                <Text style={styles.disponible}>Disponible solo para la Region Metropolitana</Text>
+                <Text style={styles.disponible} maxFontSizeMultiplier={1}>Disponible solo para la Region Metropolitana</Text>
             </View>)
         break;
         case "":
           return (
             <View style={styles.countContainer}> 
-                <Text style={styles.cargando}>CARGANDO....</Text>
+                <Text style={styles.cargando} maxFontSizeMultiplier={1}>CARGANDO....</Text>
             </View>)
         break;
       
         default:
             return (
             <View style={styles.countContainer}>
-              <Text style={styles.titulo}>COMUNA DE {comuna.comuna}</Text>
+              <Text style={styles.titulo} maxFontSizeMultiplier={1}>COMUNA DE {comuna.comuna}</Text>
               <View style={styles.PhoneContainer} >
                 <Icon
                       type="material-community"
@@ -125,7 +125,7 @@ const Container = ()=>{
                       iconStyle={styles.IcoPhone}
                       onPress={ () =>{llamada(comuna.phone)}}
                     /> 
-                <Text style={styles.numero} onPress={ () =>{llamada(comuna.phone)}}> {comuna.phone}</Text>
+                <Text style={styles.numero} onPress={ () =>{llamada(comuna.phone)}} maxFontSizeMultiplier={1}> {comuna.phone}</Text>
               </View>
               
             </View>)

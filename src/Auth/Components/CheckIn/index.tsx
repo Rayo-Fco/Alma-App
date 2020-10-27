@@ -106,17 +106,19 @@ interface Props{
     >
        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} keyboardShouldPersistTaps="handled" >
           <View style={styles.container}>
-            <Text style={styles.titulo}>Check in de Seguridad</Text>
-            <Text style={styles.subtitulo}>Datos Adicionales(No son obligacion)</Text>
+            <Text style={styles.titulo} maxFontSizeMultiplier={1}>Check in de Seguridad</Text>
+            <Text style={styles.subtitulo} maxFontSizeMultiplier={1}>Datos Adicionales(No son obligacion)</Text>
             <TextInput 
             style={styles.input}
             placeholder={'  Numero del depto. o de la casa'}
             placeholderTextColor={'#FC8EED'}
+            maxFontSizeMultiplier={1}
             />
             <TextInput 
             style={styles.input}
             placeholder={'  Numero de piso del Depto'}
             placeholderTextColor={'#FC8EED'}
+            maxFontSizeMultiplier={1}
             />
             <TextInput 
             style={styles.inputArea}
@@ -125,9 +127,10 @@ interface Props{
             multiline={true}
             numberOfLines={2}
             returnKeyType="send"
+            maxFontSizeMultiplier={1}
             />
             <TouchableHighlight style={styles.Btn} >
-              <Text style={styles.TextBtn} onPress={Envio}>Check In</Text>
+              <Text style={styles.TextBtn} onPress={Envio} maxFontSizeMultiplier={1}>Check In</Text>
             </TouchableHighlight>
           </View>
           

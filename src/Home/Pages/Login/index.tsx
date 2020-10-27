@@ -120,6 +120,7 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
             keyboardType="email-address"
             maxLength={60}
             spellCheck={false}
+            maxFontSizeMultiplier={1}
           ></TextInput>
           <View style={styles.passwordContainer}>
               <TextInput
@@ -135,6 +136,7 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
                   keyboardType="default"
                   maxLength={30}
                   spellCheck={false}
+                  maxFontSizeMultiplier={1}
                 />
               <Icon
                     type="material-community"
@@ -146,7 +148,7 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
           
       </View>
       <TouchableHighlight style={styles.BtnIngresar} onPress={ingresar}  >
-          <Text style={styles.TextBtnIngresar}>Ingresar</Text>
+          <Text style={styles.TextBtnIngresar} maxFontSizeMultiplier={1}>Ingresar</Text>
       </TouchableHighlight>
       <Loading isVisible={loading} text={"Iniciando Session"}></Loading>
       </View>

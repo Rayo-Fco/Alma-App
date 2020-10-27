@@ -18,7 +18,6 @@ import Mapa from '../../Components/Maps'
 import Info from '../../Components/Info'
 import CheckIn from '../../Components/CheckIn';
 
-
 const header = require('../../../assets/Header-Background.png')
 
 
@@ -73,7 +72,7 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
 
     return (
       
-
+      
       <View style={styles.PrincipalContainer}> 
 
           <View style={styles.BackgroundView}>

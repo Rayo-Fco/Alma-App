@@ -156,7 +156,7 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
         <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} keyboardShouldPersistTaps="handled" >
           <View style={styles.PrincipalContainer} >
 
-            <Text style={styles.TextoTitulo}>Registro de Usuario</Text>
+            <Text style={styles.TextoTitulo} maxFontSizeMultiplier={1}>Registro de Usuario</Text>
             <View style={styles.InputContainer}>
             <TextInputMask
                  type="custom"
@@ -172,6 +172,7 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                 }
                 value={rut}
                 onChangeText={text => {setRut(text)}}
+                maxFontSizeMultiplier={1}
               />
               <TextInput
                 placeholder={'Nombre'}
@@ -183,6 +184,7 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                 ref={name2}
                 value={name}
                 onChangeText={(text)=> setName(text)}
+                maxFontSizeMultiplier={1}
               />
               <TextInput
                 placeholder={'Apellidos'}
@@ -193,6 +195,7 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                 ref={lastname2}
                 value={lastname}
                 onChangeText={(text) => setLastname(text)}
+                maxFontSizeMultiplier={1}
               />
               <View style={styles.phoneContainer}>
               <Text style={styles.textphone}>+56</Text>
@@ -208,6 +211,7 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                 onChangeText={(text) => setPhone(text)}
                 keyboardType="number-pad"
                 maxLength={9}
+                maxFontSizeMultiplier={1}
               />
               </View>
               <TextInput
@@ -221,6 +225,7 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                 value={email}
                 onChangeText={(text) => setEmail(text)}
                 keyboardType="email-address"
+                maxFontSizeMultiplier={1}
               />
               <View style={styles.passwordContainer}>
                 <TextInput
@@ -234,6 +239,7 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                   onChangeText={(text) => setPassword(text)}
                   spellCheck={false}
                   secureTextEntry={showPassword ? false : true}
+                  maxFontSizeMultiplier={1}
                 />
                 <Icon
                     type="material-community"
@@ -253,6 +259,7 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                 onChangeText={(text) => setConfirmPassword(text)}
                 spellCheck={false}
                 secureTextEntry={showPassword ? false : true}
+                maxFontSizeMultiplier={1}
 
               />
               <View style={styles.politicaContainer}>
@@ -262,7 +269,7 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                   style={styles.checkbox}
                   color={"#FC6EE9"}
                 />
-                <Text style={styles.TextPolitica}> Acepta los <Text onPress={() => { setModalVisible(true); }} style={styles.TextPolitica2}>Terminos de Alma </Text></Text>
+                <Text style={styles.TextPolitica} maxFontSizeMultiplier={1}> Acepta los <Text onPress={() => { setModalVisible(true); }} style={styles.TextPolitica2} maxFontSizeMultiplier={1}>Terminos de Alma </Text></Text>
               </View>
               <Modal
                 animationType="slide"
@@ -272,8 +279,8 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                 <View style={styles.centeredView}>
                   <View style={styles.modalView}>
                     <ScrollView>
-                      <Text style={styles.TextoTituloPolitica}>Politicas de Privacidad de Alma </Text>
-                      <Text style={styles.modalText}>jakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudaheuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudaheuhfjdshudah</Text>
+                      <Text style={styles.TextoTituloPolitica} maxFontSizeMultiplier={1}>Politicas de Privacidad de Alma </Text>
+                      <Text style={styles.modalText} maxFontSizeMultiplier={1}>jakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudaheuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudahasdajsdhaskjsakjaskjadskasjkdjakasjkdasjkasjkasjdkasjkasjkdaskjdkasjkdsjkasjdkjaskjdakjaskdjaskjaskdajskasjdkdasjkadsjkasjaskjsadkjsaksjadksaksajdkajdsakjkajkasjeuhfjdshudaheuhfjdshudah</Text>
                     </ScrollView>
                     <TouchableHighlight
                       style={styles.openButton}
@@ -281,14 +288,14 @@ const Registro = ({ navigation }: AuthNavigationProps<"Registro">) => {
                         setModalVisible(!modalVisible);
                       }}
                     >
-                      <Text style={styles.textStyle}>Cerrar Politicas de Privacidad</Text>
+                      <Text style={styles.textStyle} maxFontSizeMultiplier={1}>Cerrar Politicas de Privacidad</Text>
                     </TouchableHighlight>
                   </View>
                 </View>
               </Modal>
             </View>
             <TouchableHighlight style={styles.BtnIngresar} onPress={registro}>
-              <Text style={styles.TextBtnIngresar}>Registrarse</Text>
+              <Text style={styles.TextBtnIngresar} maxFontSizeMultiplier={1}>Registrarse</Text>
             </TouchableHighlight>
 
           </View>
