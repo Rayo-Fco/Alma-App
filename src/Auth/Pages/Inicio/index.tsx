@@ -37,15 +37,7 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
   const [ImgMenu,setImgMenu] = useState<ImageProps>(menu2)
   
 
-  
 
-  useEffect(()=>{
-
-    Limpiar()
-    if(route.params){ 
-       setImgMenu(menu2)
-    }
-  },[route.params])
   
   
  const NavigateToPrincipal =() =>{

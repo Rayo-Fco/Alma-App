@@ -30,6 +30,7 @@ const Principal = ({ navigation }: AuthNavigationProps<"Principal">) => {
               CommonActions.reset({
                 index: 0,
                 routes: [{ name: "Auth" }],
+                
               })
             )
           }

@@ -24,7 +24,6 @@ import CheckIn from '../../Components/CheckIn';
 import { Input } from 'native-base';
 
 const menu1 = require('../../../assets/menu/1.png')
-const menu2 = require('../../../assets/menu/2.png')
 const menu3 = require('../../../assets/menu/3.png')
 const menux = require('../../../assets/menu/x.png')
 
@@ -32,7 +31,7 @@ const menux = require('../../../assets/menu/x.png')
 
 const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
   const [Barra, setBarra] = useState<string>("Principal");
-  const [ImgMenu,setImgMenu] = useState<ImageProps>(menu2)
+  const [ImgMenu,setImgMenu] = useState<ImageProps>(menux)
   const [info, setInfo] = useState(false);
   const [checkin, setCheckin] = useState(false);
   
@@ -50,7 +49,6 @@ const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
   
  const NavigateToPrincipal =() =>{
     Limpiar()
-    setImgMenu(menu2)
     navig.navigate("Inicio",{ PropsMenu:"Principal"})
   }
   const NavigateToInfo =() =>{

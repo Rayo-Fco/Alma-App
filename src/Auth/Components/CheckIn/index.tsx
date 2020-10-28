@@ -67,6 +67,13 @@ interface Props{
               setLoading(false)
               /* 
               isVisible = false */
+              setTimeout(()=>{
+                setNumero_depto("")
+                setNumero_piso("")
+                setExtra("")
+                return Alert.alert('Check In Exitoso')
+              },300)
+              
             }).catch((err)=>{
                 setTimeout(()=>{setLoading(false)},200)
                setTimeout(()=>{
@@ -101,7 +108,7 @@ interface Props{
 
     return (
       <KeyboardAvoidingView
-    style={{ bottom:100,position:"absolute",width:"100%" }}
+    style={{ bottom:100,position:"absolute",width:"100%",zIndex:5 }}
       behavior={Platform.OS === 'ios' ? 'padding' : undefined }
     >
        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }} keyboardShouldPersistTaps="handled" >
@@ -113,12 +120,16 @@ interface Props{
             placeholder={'  Numero del depto. o de la casa'}
             placeholderTextColor={'#FC8EED'}
             maxFontSizeMultiplier={1}
+            value={numero_depto}
+            onChangeText={(text)=> setNumero_depto(text)}
             />
             <TextInput 
             style={styles.input}
             placeholder={'  Numero de piso del Depto'}
             placeholderTextColor={'#FC8EED'}
             maxFontSizeMultiplier={1}
+            value={numero_piso}
+            onChangeText={(text)=> setNumero_piso(text)}
             />
             <TextInput 
             style={styles.inputArea}
@@ -126,8 +137,9 @@ interface Props{
             placeholderTextColor={'#FC8EED'}
             multiline={true}
             numberOfLines={2}
-            returnKeyType="send"
             maxFontSizeMultiplier={1}
+            value={extra}
+            onChangeText={(text)=> setExtra(text)}
             />
             <TouchableHighlight style={styles.Btn} >
               <Text style={styles.TextBtn} onPress={Envio} maxFontSizeMultiplier={1}>Check In</Text>

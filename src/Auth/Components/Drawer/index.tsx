@@ -30,7 +30,7 @@ const Drawer = () => {
                 width:314,
                 marginTop:200,
                 backgroundColor : "#FEE7FB",
-                }}  onPress ={() => navigation.dispatch(DrawerActions.closeDrawer())} >
+                }}  onPress ={() => navigation.navigate('Perfil',{ initial: false}) }>
                 <Text maxFontSizeMultiplier={1}>Mi Perfil</Text>
             </TouchableHighlight>
             <TouchableHighlight style={{
@@ -47,16 +47,7 @@ const Drawer = () => {
                 marginTop:40,
                 backgroundColor : "#FEE7FB",
                 }}  onPress ={() => navigation.navigate('Check',{ initial: false}) }>
-                <Text maxFontSizeMultiplier={1}>Check In de Seguridad</Text>
-            </TouchableHighlight>
-            <TouchableHighlight style={{
-                height: 54,
-                width:314,
-                marginTop:40,
-                backgroundColor : "#FEE7FB",
-                marginBottom:100
-                }}  onPress ={() => navigation.navigate('Contacto')} >
-                <Text maxFontSizeMultiplier={1}>Seguimiento en Vivo</Text>
+                <Text maxFontSizeMultiplier={1}>Mis Check In </Text>
             </TouchableHighlight>
             <Text onPress={CerrarSession} maxFontSizeMultiplier={1}>Cerrar Sesion</Text>
         </View>

@@ -14,29 +14,17 @@ import Check from '../../Components/CheckIn'
 import InfoCheck from '../../Components/InfoCheck'
 import { useNavigation } from '@react-navigation/native';
 import { Icon } from "react-native-elements";
-
+import api from '../../../Services/api';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from '../../../Component/Loading'
 const header = require('../../../assets/Header-Background.png')
 
 
 const menu1 = require('../../../assets/menu/1.png')
-const menu2 = require('../../../assets/menu/2.png')
 const menu3 = require('../../../assets/menu/3.png')
 const menux = require('../../../assets/menu/x.png')
 
-const useToggle = (initialState:boolean) => {
-  const [isToggled, setIsToggled] = React.useState(initialState);
 
-  // put [setIsToggled] into the useCallback's dependencies array
-  // this value never changes so the callback is not going to be ever re-created
-  
-  const toggle = React.useCallback(
-    
-    () => setIsToggled(state => !state),
-    [setIsToggled],
-  );
-
-  return [isToggled, toggle];
-}
 
 
 const CheckIn = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
@@ -45,54 +33,63 @@ const CheckIn = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
 
   /* console.log('Provide'+StateMenu); */
   interface Icheck{
-    user:string;
-    comuna: string;
-    coordinates:{ 
+    user:string,
+    comuna: string,
+    coordinates:[{ 
         latitude:number,
         longitude: number
-    };
-    info:{
+    }],
+    info:[{
         numero_depto:string,
         numero_piso:string,
         extra:string
-    }
+    }],
     date: Date
   };
-  let model ={
-    user:"",
-    comuna:"",
-    info:{
-        numero_depto: "",
-        numero_piso: "",
-        extra:""
-    },
-    coordinates:{
-        latitude:0,
-        longitude: 0
-    },
-    date: new Date("2020-10-25 11:42:58.507Z")
-  }
+ 
   const [ImgMenu,setImgMenu] = useState<ImageProps>(menux)
 
   const [isinfocheck, setInfocheck] = useState(false);
-  const [data, setData] = useState<Icheck>(model)
-  
-  
+  const [datas, setDatas] = useState<Icheck[]>([{ user:"",comuna:"asd",coordinates:[{latitude:34.333,longitude:34.333}],info:[{extra:"asd",numero_depto:"233",numero_piso:"344"}],date:new Date("01-02-2020")}])
+  const [data, setData] = useState<Icheck>({ user:"",comuna:"asd",coordinates:[{latitude:34.333,longitude:34.333}],info:[{extra:"asd",numero_depto:"233",numero_piso:"344"}],date:new Date("01-02-2020")})
+  const [loading,setLoading] = useState(false)
+  const [index,setIndex] = useState(0)
 
   const navig = useNavigation();
 
-  useEffect(()=>{
-
-    Limpiar()
-    if(route.params){ 
-       setImgMenu(menux)
+  const getStorage = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_Alma')
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch(e) {
+      // error reading value
     }
-  },[route.params])
+  }
   
+  const getData = async () =>{
+    getStorage().then(async (response)=>{
+      setLoading(true)
+      await api.get('/checkin/user',{
+        headers: 
+        { 
+          Authorization: "Bearer "+response.token
+        }
+      }).then((response)=>{
+          setDatas(response.data)
+          setLoading(false)
+      })
+    })
+  }
+  
+
+    useEffect(()=>{
+        getData()
+    },[])
+
+
   
  const NavigateToPrincipal =() =>{
     Limpiar()
-    setImgMenu(menu2)
     navig.navigate("Inicio",{ PropsMenu:"Principal"})
   }
   const NavigateToInfo =() =>{
@@ -113,51 +110,63 @@ const CheckIn = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
       setImgMenu(menu1)
     }else
     {
+      getData()
       setCheckin(false)
       setImgMenu(menux)
     }
   }
- 
   const Limpiar = () =>{
     setCheckin(false)
     setInfo(false)
   }
 
-  const VerInfo = (data:Icheck)=>{
-    console.log("entro");
+
+
+  const VerInfo = (data:Icheck,index:number)=>{
+    setIndex(index)
     setData(data)
     setInfocheck(true)
 
   }
-  let json ={
-    user:"Prueba",
-    comuna:"Maipu",
-    info:{
-        numero_depto: "asdasasd",
-        numero_piso: "asdasdasrrrr",
-        extra:"Extra extra"
-    },
-    coordinates:{
-        latitude:-33.4465133,
-        longitude: -70.6377907
-    },
-    date: new Date("2020-10-25 11:42:58.507Z")
-  }
-  let json2 ={
-    user:"Prueba2",
-    comuna:"xxx",
-    info:{
-        numero_depto: "222asdasasd",
-        numero_piso: "a222sdasdasrrrr",
-        extra:"E222xtra extra"
-    },
-    coordinates:{
-        latitude:-33.4958477,
-        longitude: -70.6152301
-    },
-    date: new Date("2020-10-25 11:42:58.507Z")
-  }
+  
+interface PropsPlantilla{
+  data:Icheck,
+  index:number
+}
+const Plantilla =(props:PropsPlantilla)=>{
+  const { data, index} = props
+  return(
+    <>
+    <View style={{display:"flex",flexDirection:'row', width:"100%",alignItems:"center",marginTop:30}}>
+    <Text style={styles.tabletinfo}>{index+1}</Text><Text style={styles.tabletinfo}> { new Date(data.date).toLocaleString()}</Text>
+    <Icon
+            type="material-community"
+            name="alert-circle-outline"
+            iconStyle={styles.ico}
+            onPress={()=>{VerInfo(data, index)}}
+    /> 
+  </View>
+  </>
+  )
+}
 
+
+
+interface PropsCarga{
+  mapeo:Icheck[]
+}
+  const Carga = (props:PropsCarga)=>{
+    const { mapeo } = props
+    const carga = mapeo.map((check,index)=>
+      <Plantilla  data={check} index={index} key={index}></Plantilla>
+    )
+    
+    return (<>
+        {carga}
+      <InfoCheck isVisible={isinfocheck} prueba={()=> setInfocheck(!isinfocheck)} data={data} index={index}></InfoCheck>
+      </>)
+  }
+ 
 
     return (
       
@@ -175,36 +184,30 @@ const CheckIn = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
                 /> 
             </View>
           </View>
+
           <View style={styles.CheckContainer}> 
               <Text style={styles.titulo}>Mis Check In </Text>
 
               <View style={{display:"flex",flexDirection:'row', width:"100%", marginTop:30,marginBottom:5}}>
                 <Text style={styles.tabletid} >ID </Text><Text style={styles.tabletid} >     Fecha    </Text>
               </View>
-              <View style={{display:"flex",flexDirection:'row', width:"100%",backgroundColor:"red",alignItems:"center"}}>
-                <Text style={styles.tabletinfo}>1</Text><Text style={styles.tabletinfo}> 20-10-2020 15:000</Text><Icon
-                        type="material-community"
-                        name="alert-circle-outline"
-                        iconStyle={styles.ico}
-                        onPress={()=>{VerInfo(json)}}
-                /> 
-              </View>
-
-              <InfoCheck isVisible={isinfocheck} prueba={()=> setInfocheck(!isinfocheck)} data={data} ></InfoCheck>
+              <>
+              <Carga mapeo={datas}></Carga>
+              </>
 
 
-              <View style={{marginTop:40,display:"flex",flexDirection:'row', width:"100%",backgroundColor:"red",alignItems:"center"}}>
-                <Text style={styles.tabletinfo}>2</Text><Text style={styles.tabletinfo}> 22-10-2020 15:000</Text><Icon
-                        type="material-community"
-                        name="alert-circle-outline"
-                        iconStyle={styles.ico}
-                        onPress={()=>VerInfo(json2)}
-                /> 
-              </View>
-
+              
           </View>
+
+
+
+          <Loading isVisible={loading} text={"Cargando.."}></Loading>
           <Info isVisible={info}></Info> 
           <Check isVisible={checkin}></Check>
+
+
+
+
           <View style={styles.MenuContainer}>
             <Image source={ImgMenu} style={styles.MenuImage as ImageStyle} ></Image>
             <View style={styles.MenuBottom}>

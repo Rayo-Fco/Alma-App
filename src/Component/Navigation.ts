@@ -27,4 +27,5 @@ export type HomeRoutes = {
     Contacto: undefined;
     Check: undefined;
     Inicio: undefined;
+    Perfil: undefined
 }

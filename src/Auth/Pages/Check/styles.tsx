@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     marginLeft:45
   },
   ico:{
-    color: "#ffff",
+    color: "#FC6EE9",
     fontSize:23,
     marginLeft:40
   }

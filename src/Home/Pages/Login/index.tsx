@@ -65,7 +65,8 @@ const Login = ({ navigation }: AuthNavigationProps<"Login">) => {
                   navigation.dispatch(
                     CommonActions.reset({
                       index: 0,
-                      routes: [{ name: "Auth" }],
+                      routes: [{ name: "Auth"}],
+                      
                     })
                   )
                 }).catch((err)=>{
