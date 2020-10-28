@@ -13,7 +13,7 @@ import {
 import {CommonActions} from '@react-navigation/native'
 import { HomeNavigationProps } from "../../../Component/Navigation"
 import styles from './styles';
-
+import { Icon } from "react-native-elements";
 import Mapa from '../../Components/Maps'
 import Info from '../../Components/Info'
 import CheckIn from '../../Components/CheckIn';
@@ -33,14 +33,16 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
   
 
   /* console.log('Provide'+StateMenu); */
-  const [Barra, setBarra] = useState<string>("Principal");
 
   const [ImgMenu,setImgMenu] = useState<ImageProps>(menu2)
+  
+
+  
 
   useEffect(()=>{
+
+    Limpiar()
     if(route.params){ 
-      Limpiar()
-       setBarra("Principal")
        setImgMenu(menu2)
     }
   },[route.params])
@@ -49,19 +51,29 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
  const NavigateToPrincipal =() =>{
     Limpiar()
     setImgMenu(menu2)
-    setBarra("Principal")
   }
   const NavigateToInfo =() =>{
-    Limpiar()
-    setInfo(true)
-    setImgMenu(menu3)
-    setBarra("Info")
+    if(!info){
+      Limpiar()
+      setInfo(true)
+      setImgMenu(menu3)
+      }else
+      {
+        setInfo(false)
+        setImgMenu(menu2)
+      }
   }
   const NavigateToCheck =() =>{
-    Limpiar()
-    setCheckin(true)
-    setImgMenu(menu1)
-    setBarra("Check")
+    if(!checkin){
+      Limpiar()
+      setCheckin(true)
+      setImgMenu(menu1)
+    }
+    else
+    {
+      setCheckin(false)
+      setImgMenu(menu2)
+    }
   }
  
   const Limpiar = () =>{
@@ -76,7 +88,16 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
       <View style={styles.PrincipalContainer}> 
 
           <View style={styles.BackgroundView}>
+
             <Image source={header} style={styles.BackgroundContainer as ImageStyle}  ></Image>  
+            <View style={{width:80,height:80,position:'absolute',right:8,top:50}}>
+            <Icon
+                      type="material-community"
+                      name="menu"
+                      iconStyle={{color: "#ffff",fontSize:50}}
+                      onPress={()=>{ navigation.openDrawer()}}
+              /> 
+            </View>
           </View>
           
           <View style={styles.MapsContainer}>

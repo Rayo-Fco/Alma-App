@@ -46,7 +46,7 @@ const Drawer = () => {
                 width:314,
                 marginTop:40,
                 backgroundColor : "#FEE7FB",
-                }}  onPress ={() => navigation.navigate('Check')} >
+                }}  onPress ={() => navigation.navigate('Check',{ initial: false}) }>
                 <Text maxFontSizeMultiplier={1}>Check In de Seguridad</Text>
             </TouchableHighlight>
             <TouchableHighlight style={{

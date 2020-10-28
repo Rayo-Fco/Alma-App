@@ -17,14 +17,17 @@ import styles from './styles';
 const header = require('../../../assets/Header-Background.png')
 import { HomeNavigationProps } from "../../../Component/Navigation";
 import { useNavigation } from '@react-navigation/native';
+import { Icon } from "react-native-elements";
 
 import Info from '../../Components/Info'
 import CheckIn from '../../Components/CheckIn';
 import { Input } from 'native-base';
 
 const menu1 = require('../../../assets/menu/1.png')
-const menu2 = require('../../../assets/menu/x.png')
+const menu2 = require('../../../assets/menu/2.png')
 const menu3 = require('../../../assets/menu/3.png')
+const menux = require('../../../assets/menu/x.png')
+
 
 
 const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
@@ -36,37 +39,48 @@ const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
 
   const navig = useNavigation();
   
-  const cerrar = async()=>{
-      Limpiar()
-      setImgMenu(menu2)
-      setBarra('Principal')
-  }
+  useEffect(()=>{
 
- const NavigateToPrincipal = async() =>{
+    Limpiar()
+    if(route.params){ 
+       setImgMenu(menux)
+    }
+  },[route.params])
+  
+  
+ const NavigateToPrincipal =() =>{
     Limpiar()
     setImgMenu(menu2)
-    setBarra("Principal")
     navig.navigate("Inicio",{ PropsMenu:"Principal"})
-    
-    
   }
   const NavigateToInfo =() =>{
+    if(!info){
     Limpiar()
     setInfo(true)
     setImgMenu(menu3)
-    setBarra("Info")
+    }else
+    {
+      setInfo(false)
+      setImgMenu(menux)
+    }
   }
   const NavigateToCheck =() =>{
-    Limpiar()
-    setCheckin(true)
-    setImgMenu(menu1)
-    setBarra("Check")
+    if(!checkin){
+      Limpiar()
+      setCheckin(true)
+      setImgMenu(menu1)
+    }else
+    {
+      setCheckin(false)
+      setImgMenu(menux)
+    }
   }
-
+ 
   const Limpiar = () =>{
     setCheckin(false)
     setInfo(false)
   }
+
  
 
 
@@ -76,8 +90,17 @@ const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
       
       <View style={styles.PrincipalContainer}> 
       
-          <Image source={header} style={styles.BackgroundContainer as ImageStyle}  ></Image>
-          <TouchableWithoutFeedback onPress={cerrar}>
+      <View style={styles.BackgroundView}>
+            <Image source={header} style={styles.BackgroundContainer as ImageStyle}  ></Image>  
+            <View style={{width:80,height:80,position:'absolute',right:8,top:50,}}>
+              <Icon
+                        type="material-community"
+                        name="menu"
+                        iconStyle={{color: "#ffff",fontSize:50}}
+                        onPress={()=>{ navigation.openDrawer()}}
+                /> 
+            </View>
+          </View>
           <View style={styles.MapsContainer}>
             <Text>Contacto seguridad</Text>
             <Text>Contacto seguridad</Text>
@@ -100,7 +123,6 @@ const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
             <View style={{backgroundColor:"red",width:150,height:80}}></View>
             <Text style={{color:"red",fontSize:50,}}>Contacto seguridad</Text>
           </View>
-          </TouchableWithoutFeedback>
           
           <Info isVisible={info}></Info>
           <CheckIn isVisible={checkin}></CheckIn>

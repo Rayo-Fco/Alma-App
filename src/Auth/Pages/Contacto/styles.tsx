@@ -5,17 +5,21 @@ const styles = StyleSheet.create({
     flex: 2,
     alignItems:"center",
   }, 
+  BackgroundView:{
+    position:"absolute",
+    zIndex:1,
+    elevation: 1,
+    width:"100%",
+  },
   BackgroundContainer:{
     //@ts-ignore
     width:"100%",
     //@ts-ignore
     height:230,
-    position:"absolute",
-    zIndex:1
   },
   MapsContainer:{
     flex: 1,
-   // backgroundColor:"red",
+   backgroundColor:"red",
    paddingTop:230,
     width:"100%",
     height:"100%",
