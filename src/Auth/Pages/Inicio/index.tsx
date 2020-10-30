@@ -1,13 +1,11 @@
 import React, { useState, useEffect, ComponentFactory,Component, useContext, createContext} from 'react';
 import {
   View,
-  ImageBackground,
   Image,
   ImageStyle,
   Text,
   TouchableHighlight,
   Alert,
-  Button,
   ImageProps
 } from 'react-native';
 import {CommonActions} from '@react-navigation/native'
@@ -17,7 +15,8 @@ import { Icon } from "react-native-elements";
 import Mapa from '../../Components/Maps'
 import Info from '../../Components/Info'
 import CheckIn from '../../Components/CheckIn';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import api from '../../../Services/api'
 const header = require('../../../assets/Header-Background.png')
 
 
@@ -25,19 +24,97 @@ const menu1 = require('../../../assets/menu/1.png')
 const menu2 = require('../../../assets/menu/2.png')
 const menu3 = require('../../../assets/menu/3.png')
 
+interface Point {
+  id: number;
+  title: string;
+  latitude: number;
+  longitude:number;
+}
 
 
 const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
   const [info, setInfo] = useState(false);
   const [checkin, setCheckin] = useState(false);
-  
-
-  /* console.log('Provide'+StateMenu); */
+  const [valido, setValido] = useState(true)
+  const [token,setToken] = useState("")
 
   const [ImgMenu,setImgMenu] = useState<ImageProps>(menu2)
   
+  const [markerPDI, setMarkerPDI] = useState<Point[]>([]);
+  const [markerCarabinero, setMarkerCarabinero] = useState<Point[]>([]);
 
+  const getToken = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_Alma')
+      if(jsonValue) setToken(JSON.parse(jsonValue).token)
+      return jsonValue != null ? (JSON.parse(jsonValue)): null;
+    } 
+    catch(e) 
+    {
+      Alert.alert('Error',e)
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Home" }],
+      })
+    }
+  }
 
+  const getPDI=() =>{
+    console.log("TOKEEENNN"+token);
+    api.get('/markers/pdi',{
+      headers: 
+      { 
+        Authorization: "Bearer "+token
+      }
+    }).then((response) => {
+      setMarkerPDI(response.data);
+    })
+  }
+  const getCarabinero =() =>{
+    api.get('/markers/comisaria',{
+      headers: 
+      { 
+        Authorization: "Bearer "+token
+      }
+    }).then((response) => {
+      setMarkerCarabinero(response.data);
+    })
+  }
+
+  useEffect(()=>{
+    getToken()
+  },[])
+  useEffect(()=>{
+    if(token !=""){
+      getCarabinero()
+      getPDI()
+    }
+  
+  },[token])
+
+  useEffect(()=>{
+    if(!valido)
+    {
+      Alert.alert('Lo Sentimos :( ','Session Caducada, Inicia Nuevamente')
+      try {
+        AsyncStorage.removeItem('@storage_Alma')
+        navigation.dispatch(
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Home" }],
+        })
+      )
+      } 
+      catch(e) 
+      {
+        Alert.alert('Error',e)
+        CommonActions.reset({
+          index: 0,
+          routes: [{ name: "Home" }],
+        })
+      }
+    }
+  },[valido])
   
   
  const NavigateToPrincipal =() =>{
@@ -74,6 +151,10 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
   }
 
 
+
+
+
+
     return (
       
       
@@ -91,15 +172,13 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
               /> 
             </View>
           </View>
-          
           <View style={styles.MapsContainer}>
-            
-           <Mapa></Mapa>
-           
+              <Mapa puntos={{carabineros:markerCarabinero,pdi:markerPDI}} token={token} Valido={setValido}></Mapa>
           </View>
-          <Info isVisible={info}></Info> 
-          <CheckIn isVisible={checkin}></CheckIn> 
-
+          <Info token={token} isVisible={info} Valido={setValido}></Info> 
+          <CheckIn token={token}  isVisible={checkin} Valido={setValido}></CheckIn> 
+          
+          
           <View style={styles.MenuContainer}>
             <Image source={ImgMenu} style={styles.MenuImage as ImageStyle} ></Image>
             <View style={styles.MenuBottom}>

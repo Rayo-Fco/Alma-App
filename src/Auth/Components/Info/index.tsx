@@ -1,17 +1,13 @@
-import React, { useState, useEffect, ComponentFactory,Component, useReducer } from 'react';
+import React, { useState, useEffect} from 'react';
 import {
   View,
   Linking,
   Platform,
   Text,
   Alert,
-  Image,
-  TouchableHighlight
 } from 'react-native';
 import { Icon } from "react-native-elements";
 import styles from './styles';
-import axios from 'axios';
-
 import * as Location from 'expo-location';
 import api from '../../../Services/api';
 
@@ -35,14 +31,18 @@ let LocationData ={
 
 interface Props{
   isVisible: boolean,
+  Valido:React.Dispatch<React.SetStateAction<boolean>>,
+  token:string
 }
 
 
 const Prueba =(props:Props) =>{
-const { isVisible } = props;
+const { isVisible,Valido, token } = props;
 
 const [comuna, setComuna] = useState<Comuna>(infocomuna)
 const [location,setLocation] = useState<Location>(LocationData)
+
+
 
 const llamada = (phone:string) =>{
   let numero = phone
@@ -76,11 +76,19 @@ const getLocation = async () =>{
   }
 
   const getComuna = async (info:Location) =>{
-   await api.post('/checkpoint',{ latitude: info.latitude, longitude: info.longitude}).then((response)=>{
+   await api.post('/checkpoint',
+   { latitude: info.latitude, longitude: info.longitude},
+   {
+    headers: 
+    { 
+      Authorization: "Bearer "+token
+    }
+  }).then((response)=>{
       setComuna(response.data)
     }).catch((err)=>{
-      console.log(err.details);
-      setComuna(err.details)
+        if(err.response.data == "Unauthorized") {
+           Valido(false)
+        }
     })
   } 
   
@@ -148,7 +156,7 @@ const Container = ()=>{
   }
 }
     
-  
+
 
 
 

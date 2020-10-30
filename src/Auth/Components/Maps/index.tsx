@@ -29,6 +29,10 @@ interface Point {
   latitude: number;
   longitude:number;
 }
+interface Puntos{
+  carabineros:Point[];
+  pdi:Point[];
+}
  
 let region = {
   latitude: 0,
@@ -36,12 +40,16 @@ let region = {
   latitudeDelta: 0.015,
   longitudeDelta: 0.015
 }
-
- const Maps = () =>{
+  interface Props{
+    Valido:React.Dispatch<React.SetStateAction<boolean>>
+    token:string
+    puntos:Puntos,
+  }
+ const Maps = (props:Props) =>{
+   const { Valido,token, puntos} = props
     const [markerPDI, setMarkerPDI] = useState<Point[]>([]);
     const [markerCarabinero, setMarkerCarabinero] = useState<Point[]>([]);
     const [location, setLocation] = useState<Location>(region);
-
   useEffect(() => {
 
     
@@ -63,29 +71,48 @@ let region = {
         
         if (statusPermissions !== "granted") {
           Alert.alert('Necesitar Los Permisos',  'Hola, Necesitas obtener los permisos del gps para ocupar ALMA')
-        } else { getLocation() }
+        } 
+        else {
+           getLocation() 
+        }
       }
       Permisos()
   },[])
 
   useEffect(() => {
+
     const getPDI=() =>{
-      api.get('/markers/pdi').then((response) => {
+      api.get('/markers/pdi',{
+        headers: 
+        { 
+          Authorization: "Bearer "+token
+        }
+      }).then((response) => {
         setMarkerPDI(response.data);
       }).catch(err => {
-        console.log(err);
+        console.log(err.response);
+        if(err.response.data == "Unauthorized") {
+          Valido(true)
+       }
       }); 
     }
     const getCarabinero =() =>{
-      api.get('/markers/comisaria').then((response) => {
+      api.get('/markers/comisaria',{
+        headers: 
+        { 
+          Authorization: "Bearer "+token
+        }
+      }).then((response) => {
         setMarkerCarabinero(response.data);
       }).catch(err => {
-        console.log(err);
+        if(err.response.data == "Unauthorized") {
+          Valido(true)
+       }
       }); 
     }
     
-    getPDI()
-    getCarabinero()
+    setMarkerPDI(puntos.pdi)
+    setMarkerCarabinero(puntos.carabineros)
 
   }, []);
 
@@ -100,7 +127,7 @@ let region = {
             region={location}
         >
           
-          { markerPDI.map((point,index)=> (
+          { puntos.pdi.map((point,index)=> (
             <Marker
               key={String(index)}
               coordinate={{
@@ -113,7 +140,7 @@ let region = {
             
             ))}
             {
-             markerCarabinero.map((point,index)=> (
+             puntos.carabineros.map((point,index)=> (
             <Marker
               key={String(index)}
               coordinate={{
@@ -126,7 +153,7 @@ let region = {
             
             ))}
 
-            <Polygon 
+           {/*  <Polygon 
                 coordinates={[
                   { longitude: -70.678607,  latitude: -33.526683 },   
                   { longitude:  -70.68161000000001,  latitude: -33.532125 },   
@@ -164,7 +191,7 @@ let region = {
                 strokeColor="#238C23" 
                 fillColor="#rgba(545,325,55,0.5)"
                 strokeWidth={6}
-              /> 
+              />  */}
            
            
         </MapView> 

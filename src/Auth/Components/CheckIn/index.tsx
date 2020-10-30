@@ -3,20 +3,17 @@ import React, { useState, useEffect, ComponentFactory,Component } from 'react';
 import {
   View,
   Alert,
-  Image,
   Text,
   TouchableHighlight,
   TextInput,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  ScrollViewComponent,
 } from 'react-native';
 //import { TextInput } from 'react-native-gesture-handler';
 import Loading from '../../../Component/Loading'
 import styles from './styles';
 import api from '../../../Services/api';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Location from 'expo-location';
 
 interface Location {
@@ -29,10 +26,12 @@ let LocationData ={
 }
 interface Props{
   isVisible: boolean,
+  token:string,
+  Valido:React.Dispatch<React.SetStateAction<boolean>>,
 }
 
  const CheckIn = (props:Props) =>{
-  let { isVisible } = props;
+  const { isVisible,token, Valido} = props;
 
   
   const Container = ()=>{
@@ -50,14 +49,7 @@ interface Props{
           latitude: data.coords.latitude.toString(),
           longitude: data.coords.longitude.toString()
         }
-          await AsyncStorage.getItem('@storage_Alma').then((data)=>{
-            interface p{
-              token:string
-            }
-            //@ts-ignore
-            let response:p = JSON.parse(data)
-            let token = response.token
-            api.post('/checkin',{ numero_depto: numero_depto, numero_piso: numero_piso,extra:extra, latitude:position.latitude, longitude: position.longitude },
+            await api.post('/checkin',{ numero_depto: numero_depto, numero_piso: numero_piso,extra:extra, latitude:position.latitude, longitude: position.longitude },
             {
               headers: 
               { 
@@ -75,6 +67,9 @@ interface Props{
               },300)
               
             }).catch((err)=>{
+              if(err.response.data == "Unauthorized") {
+                Valido(false)
+             }
                 setTimeout(()=>{setLoading(false)},200)
                setTimeout(()=>{
                 
@@ -93,7 +88,6 @@ interface Props{
               
               
             })
-          })
         })
           
         

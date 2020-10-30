@@ -5,7 +5,8 @@ import {
   ImageStyle,
   Text,
   TouchableHighlight,
-  ImageProps
+  ImageProps,
+  Alert
 } from 'react-native';
 import { HomeNavigationProps } from "../../../Component/Navigation"
 import styles from './styles';
@@ -17,6 +18,8 @@ import { Icon } from "react-native-elements";
 import api from '../../../Services/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Loading from '../../../Component/Loading'
+import {CommonActions} from '@react-navigation/native'
+
 const header = require('../../../assets/Header-Background.png')
 
 
@@ -54,38 +57,51 @@ const CheckIn = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
   const [data, setData] = useState<Icheck>({ user:"",comuna:"asd",coordinates:[{latitude:34.333,longitude:34.333}],info:[{extra:"asd",numero_depto:"233",numero_piso:"344"}],date:new Date("01-02-2020")})
   const [loading,setLoading] = useState(false)
   const [index,setIndex] = useState(0)
+  const [valido, setValido] = useState(true)
+  const [token,setToken] = useState("")
 
   const navig = useNavigation();
+  
 
-  const getStorage = async () => {
+  const getToken = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('@storage_Alma')
-      return jsonValue != null ? JSON.parse(jsonValue) : null;
-    } catch(e) {
-      // error reading value
+      if(jsonValue) setToken(JSON.parse(jsonValue).token)
+      return jsonValue != null ? (JSON.parse(jsonValue)): null;
+    } 
+    catch(e) 
+    {
+      Alert.alert('Error',e)
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Home" }],
+      })
     }
   }
   
   const getData = async () =>{
-    getStorage().then(async (response)=>{
       setLoading(true)
       await api.get('/checkin/user',{
         headers: 
         { 
-          Authorization: "Bearer "+response.token
+          Authorization: "Bearer "+token
         }
       }).then((response)=>{
           setDatas(response.data)
           setLoading(false)
       })
-    })
   }
   
 
     useEffect(()=>{
-        getData()
+      getToken()
     },[])
 
+    useEffect(()=>{
+      if(token != "") getData()
+    },[token])
+
+    
 
   
  const NavigateToPrincipal =() =>{
@@ -202,8 +218,8 @@ interface PropsCarga{
 
 
           <Loading isVisible={loading} text={"Cargando.."}></Loading>
-          <Info isVisible={info}></Info> 
-          <Check isVisible={checkin}></Check>
+          <Info Valido={setValido} token={token} isVisible={info}></Info> 
+          <Check Valido={setValido} token={token} isVisible={checkin}></Check>
 
 
 
