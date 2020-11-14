@@ -20,9 +20,12 @@ import { useNavigation } from '@react-navigation/native';
 import { Icon } from "react-native-elements";
 
 import Info from '../../Components/Info'
-import CheckIn from '../../Components/CheckIn';
+import Check from '../../Components/CheckIn';
 import { Input } from 'native-base';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Loading from '../../../Component/Loading'
+import {CommonActions} from '@react-navigation/native'
+import api from '../../../Services/api';
 const menu1 = require('../../../assets/menu/1.png')
 const menu3 = require('../../../assets/menu/3.png')
 const menux = require('../../../assets/menu/x.png')
@@ -34,9 +37,39 @@ const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
   const [ImgMenu,setImgMenu] = useState<ImageProps>(menux)
   const [info, setInfo] = useState(false);
   const [checkin, setCheckin] = useState(false);
-  
+  const [valido, setValido] = useState(true)
+  const [token,setToken] = useState("")
+  const [loading,setLoading] = useState(false)
 
   const navig = useNavigation();
+  const getToken = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_Alma')
+      if(jsonValue) setToken(JSON.parse(jsonValue).token)
+      return jsonValue != null ? (JSON.parse(jsonValue)): null;
+    } 
+    catch(e) 
+    {
+      Alert.alert('Error',e)
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Home" }],
+      })
+    }
+  }
+  
+  const getData = async () =>{
+      setLoading(true)
+      await api.get('/checkin/user',{
+        headers: 
+        { 
+          Authorization: "Bearer "+token
+        }
+      }).then((response)=>{
+       //   setDatas(response.data)
+          setLoading(false)
+      })
+  }
   
   useEffect(()=>{
 
@@ -45,6 +78,14 @@ const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
        setImgMenu(menux)
     }
   },[route.params])
+  
+  useEffect(()=>{
+    getToken()
+  },[])
+
+  useEffect(()=>{
+    if(token != "") getData()
+  },[token])
   
   
  const NavigateToPrincipal =() =>{
@@ -100,30 +141,14 @@ const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
             </View>
           </View>
           <View style={styles.MapsContainer}>
-            <Text>Contacto seguridad</Text>
-            <Text>Contacto seguridad</Text>
-            <Text>Contacto seguridad</Text>
-            <TextInput 
-            placeholder={'Correo Electronico'}
-            placeholderTextColor={'#FC8EED'}
-            returnKeyType="next"
-            style={{marginTop:30,
-              fontFamily: 'Roboto_300Light_Italic',
-              fontSize: 23,
-              borderBottomColor:'#FC6EE9',
-              color:'#FC6EE9',
-              borderBottomWidth:3,
-              width:330,}}
-            keyboardType="email-address"
-            maxLength={60}
-            spellCheck={false}
-          ></TextInput>
-            <View style={{backgroundColor:"red",width:150,height:80}}></View>
-            <Text style={{color:"red",fontSize:50,}}>Contacto seguridad</Text>
+            <Text style={{color:"red",fontSize:50,}}>Prontamente Contacto de Seguridad</Text>
           </View>
           
-          <Info isVisible={info}></Info>
-          <CheckIn isVisible={checkin}></CheckIn>
+          <Loading isVisible={loading} text={"Cargando.."}></Loading>
+          <Info Valido={setValido} token={token} isVisible={info}></Info> 
+          <Check Valido={setValido} token={token} isVisible={checkin}></Check>
+
+
 
 
           <View style={styles.MenuContainer}>

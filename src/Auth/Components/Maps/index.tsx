@@ -41,18 +41,14 @@ let region = {
   longitudeDelta: 0.015
 }
   interface Props{
-    Valido:React.Dispatch<React.SetStateAction<boolean>>
-    token:string
     puntos:Puntos,
   }
  const Maps = (props:Props) =>{
-   const { Valido,token, puntos} = props
-    const [markerPDI, setMarkerPDI] = useState<Point[]>([]);
-    const [markerCarabinero, setMarkerCarabinero] = useState<Point[]>([]);
+   const { puntos} = props
     const [location, setLocation] = useState<Location>(region);
-  useEffect(() => {
 
-    
+
+  useEffect(() => {
     async function getLocation(){
       const loc = await Location.getCurrentPositionAsync({});
         setLocation({ 
@@ -79,42 +75,7 @@ let region = {
       Permisos()
   },[])
 
-  useEffect(() => {
-
-    const getPDI=() =>{
-      api.get('/markers/pdi',{
-        headers: 
-        { 
-          Authorization: "Bearer "+token
-        }
-      }).then((response) => {
-        setMarkerPDI(response.data);
-      }).catch(err => {
-        console.log(err.response);
-        if(err.response.data == "Unauthorized") {
-          Valido(true)
-       }
-      }); 
-    }
-    const getCarabinero =() =>{
-      api.get('/markers/comisaria',{
-        headers: 
-        { 
-          Authorization: "Bearer "+token
-        }
-      }).then((response) => {
-        setMarkerCarabinero(response.data);
-      }).catch(err => {
-        if(err.response.data == "Unauthorized") {
-          Valido(true)
-       }
-      }); 
-    }
-    
-    setMarkerPDI(puntos.pdi)
-    setMarkerCarabinero(puntos.carabineros)
-
-  }, []);
+ 
 
   
     return (

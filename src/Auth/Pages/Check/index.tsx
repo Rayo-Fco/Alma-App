@@ -47,14 +47,15 @@ const CheckIn = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
         numero_piso:string,
         extra:string
     }],
+    fotos:[],
     date: Date
   };
  
   const [ImgMenu,setImgMenu] = useState<ImageProps>(menux)
 
   const [isinfocheck, setInfocheck] = useState(false);
-  const [datas, setDatas] = useState<Icheck[]>([{ user:"",comuna:"asd",coordinates:[{latitude:34.333,longitude:34.333}],info:[{extra:"asd",numero_depto:"233",numero_piso:"344"}],date:new Date("01-02-2020")}])
-  const [data, setData] = useState<Icheck>({ user:"",comuna:"asd",coordinates:[{latitude:34.333,longitude:34.333}],info:[{extra:"asd",numero_depto:"233",numero_piso:"344"}],date:new Date("01-02-2020")})
+  const [datas, setDatas] = useState<Icheck[]>([{ user:"",comuna:"asd",coordinates:[{latitude:34.333,longitude:34.333}],info:[{extra:"asd",numero_depto:"233",numero_piso:"344"}],date:new Date("01-02-2020"),fotos:[]}])
+  const [data, setData] = useState<Icheck>({ user:"",comuna:"asd",coordinates:[{latitude:34.333,longitude:34.333}],info:[{extra:"asd",numero_depto:"233",numero_piso:"344"}],date:new Date("01-02-2020") ,fotos:[]})
   const [loading,setLoading] = useState(false)
   const [index,setIndex] = useState(0)
   const [valido, setValido] = useState(true)
@@ -101,7 +102,13 @@ const CheckIn = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
       if(token != "") getData()
     },[token])
 
-    
+    useEffect(()=>{
+      
+      if(route.params){ 
+          Limpiar()
+         setImgMenu(menux)
+      }
+    },[navigation.isFocused()])
 
   
  const NavigateToPrincipal =() =>{

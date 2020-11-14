@@ -17,12 +17,12 @@ const styles = StyleSheet.create({
     //@ts-ignore
     height:230,
   },
-  MapsContainer:{
+  PerfilContainer:{
     flex: 1,
-   backgroundColor:"red",
-   paddingTop:230,
+    paddingTop:230,
     width:"100%",
     height:"100%",
+    paddingRight:20
 
   },
   mapStyle: {
@@ -47,6 +47,34 @@ const styles = StyleSheet.create({
     flexGrow:1,
     marginTop:15,
     marginBottom:22,
+  },
+  ContainerInput:{
+    flexDirection:"row",
+    alignItems:"center",
+    alignSelf:'flex-end'
+  },
+  TextInput:{
+    fontFamily: 'Roboto_500Medium',
+    fontSize: 23,
+    color:'#FC6EE9',
+    marginRight:10
+  },
+  Input:{
+    fontFamily: 'Roboto_300Light_Italic',
+    fontSize: 23,
+    borderBottomColor:'#FDA0F0',
+    borderBottomWidth:2,
+    width:230,
+    marginTop:5
+  },
+  Titulo:{
+    fontFamily: 'Roboto_500Medium',
+    fontSize: 25,
+    color:'#FC6EE9',
+    marginLeft:30,
+    textTransform:'capitalize',
+    marginBottom:20,
+    marginTop:20
   }
 
 });

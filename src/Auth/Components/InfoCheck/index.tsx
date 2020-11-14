@@ -3,9 +3,9 @@ import {
   View,
   Text,
   Button,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
-import { Overlay } from "react-native-elements";
+import { Overlay,Image } from "react-native-elements";
 import styles from './styles';
 import MapView, { Marker, Polygon} from 'react-native-maps';
 
@@ -21,6 +21,7 @@ interface Icheck{
           numero_piso:string,
           extra:string
       }],
+      fotos:[],
       date: Date
 };
   
@@ -33,6 +34,7 @@ interface Props{
 
 const InfoCheck = (props:Props) =>{
     const { isVisible, prueba, data, index} = props;
+    const [imagen, setImagen] = useState(false)
 
     const Mostrar = ()=>{
       if(!data){
@@ -76,8 +78,23 @@ const InfoCheck = (props:Props) =>{
               </MapView>
               <Text>Informacion</Text>
                   <Text>{data.info[0].extra? "Depto o Casa: "+data.info[0].extra: ""}</Text>
-                  <Text>{data.info[0].numero_piso? "Piso: "+data.info[0].extra: ""}</Text>
                   <Text>{data.info[0].extra? "Extra: "+data.info[0].extra: ""}</Text>
+                  <Text onPress={()=> setImagen(true)}>{data.fotos.length > 0 ? "Ver foto" : ""}</Text>
+                  <Overlay
+                    isVisible={imagen}
+                    overlayStyle={styles.overlay2}
+                    onBackdropPress={()=> setImagen(!imagen)}
+                  >
+                    <View>
+                      <Image
+                          style={{width:"100%", height:"90%",}} source={{uri: data.fotos.toString()}}
+                          PlaceholderContent={<ActivityIndicator color="#FFF" />}
+                          transition={true}
+                          containerStyle={{backgroundColor:"#fff"}}
+                        />
+                      <Button title="Cerrar" onPress={()=> setImagen(!imagen)}></Button>
+                    </View>
+                  </Overlay>
               <Button title="Cerrar" onPress={prueba} />
             </View>
           </Overlay>

@@ -17,6 +17,7 @@ import Info from '../../Components/Info'
 import CheckIn from '../../Components/CheckIn';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../../Services/api'
+import Menu from '../../Components/Menu'
 const header = require('../../../assets/Header-Background.png')
 
 
@@ -51,35 +52,51 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
     } 
     catch(e) 
     {
-      Alert.alert('Error',e)
-      CommonActions.reset({
-        index: 0,
-        routes: [{ name: "Home" }],
-      })
+      CerrarSession(e,true)
     }
   }
+  const CerrarSession = (error:string,mensaje:boolean)=>{
+    EliminarToken()
+    if(mensaje) Alert.alert('Error!',error)
+    navigation.dispatch(CommonActions.reset({
+      index: 0,
+      routes: [{ name: "Home" }],
+    }))
+  }
 
-  const getPDI=() =>{
+  const getPDI= async() =>{
     console.log("TOKEEENNN"+token);
-    api.get('/markers/pdi',{
+    await api.get('/markers/pdi',{
       headers: 
       { 
         Authorization: "Bearer "+token
       }
     }).then((response) => {
       setMarkerPDI(response.data);
+    }).catch((err)=>{
+      console.log(err.response);
+      return CerrarSession("Lo sentimos, vuelve a ingresar",true)
     })
   }
-  const getCarabinero =() =>{
-    api.get('/markers/comisaria',{
+  const getCarabinero = async() =>{
+    await api.get('/markers/comisaria',{
       headers: 
       { 
         Authorization: "Bearer "+token
       }
     }).then((response) => {
       setMarkerCarabinero(response.data);
+    }).catch((err)=>{
+      return CerrarSession("Lo sentimos, vuelve a ingresar",false)
     })
   }
+  useEffect(()=>{
+    console.log(route.params);
+    Limpiar()
+    if(route.params){ 
+       setImgMenu(menu2)
+    }
+  },[route.params])
 
   useEffect(()=>{
     getToken()
@@ -92,27 +109,21 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
   
   },[token])
 
+  const EliminarToken = async()=>{
+    try {
+      await AsyncStorage.removeItem('@storage_Alma')
+    } 
+    catch(e) 
+    {
+      Alert.alert('Error',e)
+    }
+  }
+
   useEffect(()=>{
     if(!valido)
     {
-      Alert.alert('Lo Sentimos :( ','Session Caducada, Inicia Nuevamente')
-      try {
-        AsyncStorage.removeItem('@storage_Alma')
-        navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: "Home" }],
-        })
-      )
-      } 
-      catch(e) 
-      {
-        Alert.alert('Error',e)
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: "Home" }],
-        })
-      }
+      CerrarSession('Session Caducada, Inicia Nuevamente',true)
+      
     }
   },[valido])
   
@@ -173,12 +184,12 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
             </View>
           </View>
           <View style={styles.MapsContainer}>
-              <Mapa puntos={{carabineros:markerCarabinero,pdi:markerPDI}} token={token} Valido={setValido}></Mapa>
+              <Mapa puntos={{carabineros:markerCarabinero,pdi:markerPDI}}></Mapa>
           </View>
           <Info token={token} isVisible={info} Valido={setValido}></Info> 
           <CheckIn token={token}  isVisible={checkin} Valido={setValido}></CheckIn> 
           
-          
+         {/*  <Menu isInfo={setInfo} isCheck={setCheckin} check={checkin} info={info}></Menu> */}
           <View style={styles.MenuContainer}>
             <Image source={ImgMenu} style={styles.MenuImage as ImageStyle} ></Image>
             <View style={styles.MenuBottom}>

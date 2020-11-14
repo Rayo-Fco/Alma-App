@@ -8,6 +8,13 @@ const styles = StyleSheet.create({
       borderWidth: 2,
       borderRadius: 10,
     },
+    overlay2: {
+      height: "80%",
+      width: "90%",
+      backgroundColor: "#FFF",
+      borderColor: "#FC5CE7",
+      borderWidth: 1,
+    },
     view: {
         flex: 1,
         alignItems: "center",

@@ -1,33 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  PrincipalContainer:{
-    flex: 2,
-    alignItems:"center",
-  }, 
-  BackgroundView:{
-    position:"absolute",
-    zIndex:1,
-    elevation: 1,
-    width:"100%",
-  },
-  BackgroundContainer:{
-    //@ts-ignore
-    width:"100%",
-    //@ts-ignore
-    height:230,
-  },
-  MapsContainer:{
-    flex: 1,
-   paddingTop:230,
-    width:"100%",
-    height:"100%",
-
-  },
-  mapStyle: {
-    width: "100%",
-    height: "130%",
-  },
   MenuContainer:{
     backgroundColor:"#FEF9FE",
     width:"100%",
@@ -47,6 +20,8 @@ const styles = StyleSheet.create({
     marginTop:15,
     marginBottom:22,
   }
+
+
 
 });
 

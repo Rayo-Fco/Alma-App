@@ -10,7 +10,10 @@ import {
   Button,
   ImageProps,
   TouchableWithoutFeedback,
-  TextInput
+  KeyboardAvoidingView,
+  Platform,
+  TextInput,
+  ScrollView
 } from 'react-native';
 import styles from './styles';
 
@@ -20,12 +23,24 @@ import { useNavigation } from '@react-navigation/native';
 import { Icon } from "react-native-elements";
 
 import Info from '../../Components/Info'
-import CheckIn from '../../Components/CheckIn';
+import Check from '../../Components/CheckIn';
 import { Input } from 'native-base';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {CommonActions} from '@react-navigation/native'
+import api from '../../../Services/api';
+import Loading from '../../../Component/Loading'
 
 const menu1 = require('../../../assets/menu/1.png')
 const menu3 = require('../../../assets/menu/3.png')
 const menux = require('../../../assets/menu/x.png')
+interface User{
+    nombre: string
+    apellido: string
+    rut:string
+    telefono: number
+    email: string
+    fecha_registro: Date
+}
 const Perfil = ({ navigation,route }: HomeNavigationProps<"Contacto">)=> {
   const navi = useNavigation();
   
@@ -33,17 +48,60 @@ const Perfil = ({ navigation,route }: HomeNavigationProps<"Contacto">)=> {
   const [ImgMenu,setImgMenu] = useState<ImageProps>(menux)
   const [info, setInfo] = useState(false);
   const [checkin, setCheckin] = useState(false);
-  
+  const [valido, setValido] = useState(true)
+  const [token,setToken] = useState("")
+  const [loading,setLoading] = useState(false)
+  const [user,setUser] = useState<User>()
+  const [disable,setDisable] = useState(false)
 
   const navig = useNavigation();
+
+
+  const getToken = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_Alma')
+      if(jsonValue) setToken(JSON.parse(jsonValue).token)
+      return jsonValue != null ? (JSON.parse(jsonValue)): null;
+    } 
+    catch(e) 
+    {
+      Alert.alert('Error',e)
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Home" }],
+      })
+    }
+  }
+  
+  const getData = async () =>{
+      setLoading(true)
+      await api.get('/user',{
+        headers: 
+        { 
+          Authorization: "Bearer "+token
+        }
+      }).then((response)=>{
+         console.log(response.data);
+         setUser(response.data)
+          setLoading(false)
+          
+      })
+  }
   
   useEffect(()=>{
-
     Limpiar()
     if(route.params){ 
        setImgMenu(menux)
     }
   },[route.params])
+
+  useEffect(()=>{
+    getToken()
+  },[])
+
+  useEffect(()=>{
+    if(token != "") getData()
+  },[token])
   
   
  const NavigateToPrincipal =() =>{
@@ -66,6 +124,7 @@ const Perfil = ({ navigation,route }: HomeNavigationProps<"Contacto">)=> {
       Limpiar()
       setCheckin(true)
       setImgMenu(menu1)
+      console.log(user);
     }else
     {
       setCheckin(false)
@@ -78,14 +137,6 @@ const Perfil = ({ navigation,route }: HomeNavigationProps<"Contacto">)=> {
     setInfo(false)
   }
 
-  let user = {
-    nombre: "Marias",
-    apellido: "Perezx",
-    rut:"11.122.222-2",
-    telefono: 68762892,
-    email: "asdaad@asdasd.cl",
-    password: "xxxxxx"
-  }
 
 
   
@@ -105,32 +156,46 @@ const Perfil = ({ navigation,route }: HomeNavigationProps<"Contacto">)=> {
                 /> 
             </View>
           </View>
-          <View style={styles.MapsContainer}>
-            <Text>Hola! </Text>
-            <Text>Contacto seguridad</Text>
-            <Text>Contacto seguridad</Text>
-            <TextInput 
-            placeholder={'Correo Electronico'}
-            placeholderTextColor={'#FC8EED'}
-            returnKeyType="next"
-            style={{marginTop:30,
-              fontFamily: 'Roboto_300Light_Italic',
-              fontSize: 23,
-              borderBottomColor:'#FC6EE9',
-              color:'#FC6EE9',
-              borderBottomWidth:3,
-              width:330,}}
-            keyboardType="email-address"
-            maxLength={60}
-            spellCheck={false}
-          ></TextInput>
-            <View style={{backgroundColor:"red",width:150,height:80}}></View>
-            <Text style={{color:"red",fontSize:50,}}>Contacto seguridad</Text>
+          <View style={styles.PerfilContainer}>
+            <Text style={styles.Titulo}>Hola!, {user?.nombre} {user?.apellido}</Text>
+            <KeyboardAvoidingView
+              style={{ flex: 2, }}
+                behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+              >
+             <ScrollView contentContainerStyle={{ justifyContent: 'center' }} keyboardShouldPersistTaps="handled" >
+              <View style={styles.ContainerInput}>
+              <Text style={styles.TextInput}>Email:</Text>
+              <TextInput 
+              placeholder={'Correo Electronico'}
+              placeholderTextColor={'#FC8EED'}
+              returnKeyType="next"
+              style={[styles.Input,{color:disable? "red" : "#FC8EED"}]}
+              keyboardType="email-address"
+              maxLength={60}
+              spellCheck={false}
+              editable={disable}
+              >{user?.email}</TextInput>
+            </View>
+            <View style={styles.ContainerInput}>
+              <Text style={styles.TextInput}>Telefono:</Text>
+              <TextInput 
+              placeholder={'Correo Electronico'}
+              placeholderTextColor={'#FC8EED'}
+              returnKeyType="send"
+              style={[styles.Input,{color:disable? "red" : "#FC8EED"}]}
+              keyboardType="number-pad"
+              maxLength={60}
+              spellCheck={false}
+              editable={disable}
+              >{user?.telefono}</TextInput>
+            </View>
+            </ScrollView>
+            </KeyboardAvoidingView>
           </View>
+          <Button title={"Modificar"} onPress={()=>{setDisable(!disable)}}>Modificar</Button>
+          <Info Valido={setValido} token={token} isVisible={info}></Info> 
+          <Check Valido={setValido} token={token} isVisible={checkin}></Check>
           
-          <Info isVisible={info}></Info>
-          <CheckIn isVisible={checkin}></CheckIn>
-
 
           <View style={styles.MenuContainer}>
             <Image source={ImgMenu} style={styles.MenuImage as ImageStyle} ></Image>

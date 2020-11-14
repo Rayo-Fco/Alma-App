@@ -86,9 +86,7 @@ const getLocation = async () =>{
   }).then((response)=>{
       setComuna(response.data)
     }).catch((err)=>{
-        if(err.response.data == "Unauthorized") {
-           Valido(false)
-        }
+        Valido(false)
     })
   } 
   
