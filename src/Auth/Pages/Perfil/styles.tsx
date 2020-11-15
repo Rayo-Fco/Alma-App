@@ -75,7 +75,67 @@ const styles = StyleSheet.create({
     textTransform:'capitalize',
     marginBottom:20,
     marginTop:20
-  }
+  },
+  textTituloPass:{
+    marginLeft:50,
+    fontFamily: 'Roboto_500Medium',
+    fontSize: 23,
+    color:'#FC6EE9',
+  },
+  Password2Container: {
+    width:"100%",
+    alignContent:"center",
+    paddingLeft:20,
+    marginTop:20
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+  },
+  IcoPassword:{
+    color: "#FC8EED",
+    marginTop:25,
+    marginLeft:5
+  },
+  Inputpassword:{
+    marginTop:20,
+    fontFamily: 'Roboto_300Light_Italic',
+    fontSize: 23,
+    borderBottomColor:'#FC6EE9',
+    borderBottomWidth:3,
+    width:300,
+  },
+  Btn: {
+    height: 54,
+    width: 314,
+    borderRadius: 22,
+    marginTop: 5,
+    backgroundColor: "#FC7EEB",
+    alignItems: 'center',
+    justifyContent: "center",
+    borderTopColor: "#FEEDFC",
+    borderTopWidth: 2,
+    borderLeftColor: "#FEEDFC",
+    borderLeftWidth: 2,
+    borderRightColor: "#FEEDFC",
+    borderRightWidth: 2,
+    borderBottomColor: "#FEEDFC",
+    borderBottomWidth: 2,
+    marginBottom:20
+  },
+  TextBtn: {
+    color: '#FEEDFC',
+    fontSize: 30,
+    fontFamily: "Roboto_700Bold",
+  },
+  overlay: {
+    height: "auto",
+    width: "95%",
+    backgroundColor: "#FFF",
+    borderColor: "#FC5CE7",
+    borderWidth: 1,
+    alignItems:"center"
+  },
+
 
 });
 

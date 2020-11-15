@@ -100,7 +100,6 @@ const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
     }else
     {
       setInfo(false)
-      setImgMenu(menux)
     }
   }
   const NavigateToCheck =() =>{
@@ -111,13 +110,13 @@ const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
     }else
     {
       setCheckin(false)
-      setImgMenu(menux)
     }
   }
  
   const Limpiar = () =>{
     setCheckin(false)
     setInfo(false)
+    setImgMenu(menux)
   }
 
  
@@ -136,7 +135,7 @@ const Seguimiento = ({route,navigation }: HomeNavigationProps<"Contacto">)=> {
                         type="material-community"
                         name="menu"
                         iconStyle={{color: "#ffff",fontSize:50}}
-                        onPress={()=>{ navigation.openDrawer()}}
+                        onPress={()=>{ Limpiar(); navigation.openDrawer()}}
                 /> 
             </View>
           </View>

@@ -65,7 +65,6 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
   }
 
   const getPDI= async() =>{
-    console.log("TOKEEENNN"+token);
     await api.get('/markers/pdi',{
       headers: 
       { 
@@ -91,14 +90,15 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
     })
   }
   useEffect(()=>{
-    console.log(route.params);
     Limpiar()
     if(route.params){ 
        setImgMenu(menu2)
     }
   },[route.params])
 
+
   useEffect(()=>{
+    Limpiar()
     getToken()
   },[])
   useEffect(()=>{
@@ -130,7 +130,6 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
   
  const NavigateToPrincipal =() =>{
     Limpiar()
-    setImgMenu(menu2)
   }
   const NavigateToInfo =() =>{
     if(!info){
@@ -140,7 +139,6 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
       }else
       {
         setInfo(false)
-        setImgMenu(menu2)
       }
   }
   const NavigateToCheck =() =>{
@@ -152,13 +150,13 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
     else
     {
       setCheckin(false)
-      setImgMenu(menu2)
     }
   }
  
   const Limpiar = () =>{
     setCheckin(false)
     setInfo(false)
+    setImgMenu(menu2)
   }
 
 
@@ -179,7 +177,7 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
                       type="material-community"
                       name="menu"
                       iconStyle={{color: "#ffff",fontSize:50}}
-                      onPress={()=>{ navigation.openDrawer()}}
+                      onPress={()=>{ Limpiar(); navigation.openDrawer()}}
               /> 
             </View>
           </View>

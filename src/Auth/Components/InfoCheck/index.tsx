@@ -77,7 +77,7 @@ const InfoCheck = (props:Props) =>{
   
               </MapView>
               <Text>Informacion</Text>
-                  <Text>{data.info[0].extra? "Depto o Casa: "+data.info[0].extra: ""}</Text>
+                  <Text>{data.info[0].numero_depto? "Depto o Casa: "+data.info[0].numero_depto: ""}</Text>
                   <Text>{data.info[0].extra? "Extra: "+data.info[0].extra: ""}</Text>
                   <Text onPress={()=> setImagen(true)}>{data.fotos.length > 0 ? "Ver foto" : ""}</Text>
                   <Overlay

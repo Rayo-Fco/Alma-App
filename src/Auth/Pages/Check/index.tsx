@@ -111,37 +111,37 @@ const CheckIn = ({ route, navigation }: HomeNavigationProps<"Inicio">)=> {
     },[navigation.isFocused()])
 
   
- const NavigateToPrincipal =() =>{
-    Limpiar()
-    navig.navigate("Inicio",{ PropsMenu:"Principal"})
-  }
-  const NavigateToInfo =() =>{
-    if(!info){
-    Limpiar()
-    setInfo(true)
-    setImgMenu(menu3)
-    }else
-    {
+    const NavigateToPrincipal =() =>{
+      Limpiar()
+      navig.navigate("Inicio",{ PropsMenu:"Principal"})
+    }
+    const NavigateToInfo =() =>{
+      Limpiar()
+      if(!info){
+      setInfo(true)
+      setImgMenu(menu3)
+      }else
+      {
+        setInfo(false)
+      }
+    }
+    const NavigateToCheck =() =>{
+      Limpiar()
+      if(!checkin){
+        setCheckin(true)
+        setImgMenu(menu1)
+      }else
+      {
+        setCheckin(false)
+        getData()
+      }
+    }
+   
+    const Limpiar = () =>{
+      setCheckin(false)
       setInfo(false)
       setImgMenu(menux)
     }
-  }
-  const NavigateToCheck =() =>{
-    if(!checkin){
-      Limpiar()
-      setCheckin(true)
-      setImgMenu(menu1)
-    }else
-    {
-      getData()
-      setCheckin(false)
-      setImgMenu(menux)
-    }
-  }
-  const Limpiar = () =>{
-    setCheckin(false)
-    setInfo(false)
-  }
 
 
 
@@ -203,7 +203,7 @@ interface PropsCarga{
                         type="material-community"
                         name="menu"
                         iconStyle={{color: "#ffff",fontSize:50}}
-                        onPress={()=>{ navigation.openDrawer()}}
+                        onPress={()=>{ Limpiar(); navigation.openDrawer()}}
                 /> 
             </View>
           </View>

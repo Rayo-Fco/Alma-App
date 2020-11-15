@@ -66,12 +66,15 @@ const llamada = (phone:string) =>{
 
 const getLocation = async () =>{
   await Location.getLastKnownPositionAsync().then((data)=>{
+    if(data){
     let position = {
       latitude: data.coords.latitude.toString(),
       longitude: data.coords.longitude.toString()
     }
-    setLocation(position)
-    return getComuna(position)
+      setLocation(position)
+      return getComuna(position)
+    }
+    
   })
   }
 
