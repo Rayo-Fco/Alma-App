@@ -6,7 +6,8 @@ import {
   Text,
   TouchableHighlight,
   ImageProps,
-  Alert
+  Alert,
+  Platform
 } from 'react-native';
 import { HomeNavigationProps } from "../../../Component/Navigation"
 import styles from './styles';
@@ -161,7 +162,7 @@ const Plantilla =(props:PropsPlantilla)=>{
   return(
     <>
     <View style={{display:"flex",flexDirection:'row', width:"100%",alignItems:"center",marginTop:30}}>
-    <Text style={styles.tabletinfo}>{index+1}</Text><Text style={styles.tabletinfo}> { new Date(data.date).toLocaleString()}</Text>
+    <Text style={styles.tabletinfo}>{index+1}</Text><Text style={styles.tabletinfo}> { Platform.OS === 'android'? new Date(data.date).getDate()+"/"+new Date(data.date).getMonth()+"/"+new Date(data.date).getFullYear()+" "+new Date(data.date).getHours()+":"+new Date(data.date).getMinutes()+":"+new Date(data.date).getSeconds(): new Date(data.date).toLocaleString()}</Text>
     <Icon
             type="material-community"
             name="alert-circle-outline"

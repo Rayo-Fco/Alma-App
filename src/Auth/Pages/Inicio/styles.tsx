@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
   },
   MapsContainer:{
     flex: 1,
-    backgroundColor:"transparent",
+    paddingTop:180,
     width:"100%",
     height:"100%",
 

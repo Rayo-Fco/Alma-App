@@ -99,10 +99,10 @@ const styles = StyleSheet.create({
   Inputpassword:{
     marginTop:20,
     fontFamily: 'Roboto_300Light_Italic',
-    fontSize: 23,
+    fontSize: 20,
     borderBottomColor:'#FC6EE9',
     borderBottomWidth:3,
-    width:300,
+    width:290,
   },
   Btn: {
     height: 54,

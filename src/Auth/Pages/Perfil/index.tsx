@@ -308,12 +308,13 @@ const Perfil = ({ navigation, route }: HomeNavigationProps<"Contacto">) => {
         </View>
       </View>
       <View style={styles.PerfilContainer}>
-        <Text style={styles.Titulo}>Hola!, {user?.nombre} {user?.apellido}</Text>
+        
         <KeyboardAvoidingView
           style={{ flex: 2, }}
           behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         >
           <ScrollView contentContainerStyle={{ justifyContent: 'center', }} keyboardShouldPersistTaps="handled" >
+          <Text style={styles.Titulo}>Hola!, {user?.nombre} {user?.apellido}</Text>
             <View style={styles.ContainerInput}>
               <Text style={styles.TextInput}>Email:</Text>
               <TextInput
@@ -346,7 +347,7 @@ const Perfil = ({ navigation, route }: HomeNavigationProps<"Contacto">) => {
             <View style={styles.passwordContainer}>
 
               <TextInput
-                placeholder={'Nueva Contraseña'}
+                placeholder={'Nueva Clave'}
                 placeholderTextColor={'#FC8EED'}
                 style={styles.Inputpassword}
                 returnKeyType={"next"}
@@ -367,7 +368,7 @@ const Perfil = ({ navigation, route }: HomeNavigationProps<"Contacto">) => {
 
             </View>
             <TextInput
-              placeholder={'Repita la Nueva Contraseña'}
+              placeholder={'Repita la Nueva Clave'}
               placeholderTextColor={'#FC8EED'}
               style={styles.Inputpassword}
               returnKeyType={"done"}
@@ -381,6 +382,10 @@ const Perfil = ({ navigation, route }: HomeNavigationProps<"Contacto">) => {
 
             />
             </View>
+
+            <TouchableHighlight style={styles.Btn} >
+              <Text style={styles.TextBtn} onPress={continuar} maxFontSizeMultiplier={1}>Continuar</Text>
+            </TouchableHighlight>
           </ScrollView>
         </KeyboardAvoidingView>
       </View>
@@ -420,9 +425,6 @@ const Perfil = ({ navigation, route }: HomeNavigationProps<"Contacto">) => {
         </View>
       </Overlay>
 
-      <TouchableHighlight style={styles.Btn} >
-        <Text style={styles.TextBtn} onPress={continuar} maxFontSizeMultiplier={1}>Continuar</Text>
-      </TouchableHighlight>
       <Info Valido={setValido} token={token} isVisible={info}></Info>
       <Check Valido={setValido} token={token} isVisible={checkin}></Check>
 
