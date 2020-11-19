@@ -17,7 +17,7 @@ import Info from '../../Components/Info'
 import CheckIn from '../../Components/CheckIn';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../../Services/api'
-import Menu from '../../Components/Menu'
+import Help from '../../Components/Help'
 const header = require('../../../assets/Header-Background.png')
 
 
@@ -175,6 +175,7 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
           />
         </View>
       </View>
+      <Help></Help>
       <View style={styles.MapsContainer}>
         <Mapa puntos={{ carabineros: markerCarabinero, pdi: markerPDI }}></Mapa>
       </View>
