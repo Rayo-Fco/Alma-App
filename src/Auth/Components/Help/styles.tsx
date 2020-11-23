@@ -33,6 +33,19 @@ const styles = StyleSheet.create({
         borderTopRightRadius:50,
         borderBottomRightRadius:50,
       },
+      btnSOSActivo: {
+        flex: 1,
+        width:110,
+        height:103,
+        position:"absolute",
+        left:0,
+        top:245,
+        zIndex:5,
+        bottom:100,
+        backgroundColor:"#FC9FEF",
+        borderTopRightRadius:50,
+        borderBottomRightRadius:50,
+      },
       btnAyuda: {
         marginTop:70,
         width:316,
@@ -59,7 +72,15 @@ const styles = StyleSheet.create({
         fontSize:38,
         fontFamily:"Roboto_700Bold",
         textDecorationLine:'underline'
-      }
+      },
+      txtSOSActivo:{
+        marginLeft:2,
+        marginTop:100,
+        marginBottom:60,
+        color:"#FE5858",
+        fontSize:30,
+        fontFamily:"Roboto_700Bold"
+    },
 
 });
 

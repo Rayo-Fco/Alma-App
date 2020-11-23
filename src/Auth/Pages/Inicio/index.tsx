@@ -18,6 +18,11 @@ import CheckIn from '../../Components/CheckIn';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../../../Services/api'
 import Help from '../../Components/Help'
+import * as Location from 'expo-location';
+import * as BackgroundFetch from "expo-background-fetch"
+import * as TaskManager from "expo-task-manager"
+import ContactoSeguridad from '../Seguimiento';
+
 const header = require('../../../assets/Header-Background.png')
 
 
@@ -38,7 +43,8 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
   const [checkin, setCheckin] = useState(false);
   const [valido, setValido] = useState(true)
   const [token, setToken] = useState("")
-
+  const [tokenhelp, setTokenHelp] = useState(false)
+  const prueba = ""
   const [ImgMenu, setImgMenu] = useState<ImageProps>(menu2)
 
   const [markerPDI, setMarkerPDI] = useState<Point[]>([]);
@@ -54,6 +60,66 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
       CerrarSession(e, true)
     }
   }
+
+  const Validar = async () => {
+    await AsyncStorage.getItem('@storage_Alma_help').then(async (response) => {
+      if (response) {
+        let data = JSON.parse(response)
+        let tiempo = new Date(Date.now()).getTime()
+        if (((tiempo - data.time) / 1000 / 60 / 60) < 8) {
+          let token2 = ""
+          const jsonValue = await AsyncStorage.getItem('@storage_Alma')
+          if (jsonValue) {
+            token2 = JSON.parse(jsonValue).token
+            setTokenHelp(true)
+            await Location.getLastKnownPositionAsync().then(async (data) => {
+              let position = {
+                latitude: '0',
+                longitude: ''
+              }
+              if (data) {
+                position = {
+                  latitude: data.coords.latitude.toString(),
+                  longitude: data.coords.longitude.toString()
+                }
+              }
+
+
+              let bearer = "Bearer " + token2
+
+              await api.post('/helpSOS', position,
+                {
+                  headers:
+                  {
+                    Authorization: bearer,
+                  }
+                })
+            }).catch((err) => {
+              console.log("ERROR:");
+              console.log(err);
+            })
+          }
+        }
+        else {
+          setTokenHelp(false)
+        }
+
+      }
+      else {
+        try {
+          await AsyncStorage.removeItem('@storage_Alma_help')
+        }
+        catch (e) {
+          console.log("Error remover");
+        }
+      }
+    })
+
+
+  }
+
+
+
   const CerrarSession = (error: string, mensaje: boolean) => {
     EliminarToken()
     if (mensaje) Alert.alert('Error!', error)
@@ -88,7 +154,18 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
       return CerrarSession("Lo sentimos, vuelve a ingresar", false)
     })
   }
+
   useEffect(() => {
+    if (navigation.isFocused()) {
+      setInterval(() => {
+        console.log();
+        Validar()
+      }, 3 * 1000 * 60);
+    }
+  }, []);
+
+  useEffect(() => {
+
     Limpiar()
     if (route.params) {
       setImgMenu(menu2)
@@ -99,14 +176,43 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
   useEffect(() => {
     Limpiar()
     getToken()
+
   }, [])
   useEffect(() => {
     if (token != "") {
       getCarabinero()
       getPDI()
+      Validar()
     }
 
   }, [token])
+
+  useEffect(() => {
+    const prueba = async () => {
+      const { status } = await Location.requestPermissionsAsync();
+      if (status === 'granted') {
+        await Location.startLocationUpdatesAsync("PrimeraTarea", {
+          accuracy: Location.Accuracy.Balanced,
+        });
+      }
+      else {
+        CerrarSession("No se puede Alma por no tener los permisos", true)
+      }
+    }
+    prueba()
+  })
+
+  TaskManager.defineTask("PrimeraTarea", (data: any) => {
+    if (data) {
+      setInterval(() => {
+        Validar()
+        console.log("entro segundo plano");
+      }, 5 * 1000 * 60);
+
+    }
+  });
+
+
 
   const EliminarToken = async () => {
     try {
@@ -175,7 +281,7 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
           />
         </View>
       </View>
-      <Help></Help>
+      <Help token={token} TokenHelp={tokenhelp} setTokenHelp={setTokenHelp} Valido={setValido}></Help>
       <View style={styles.MapsContainer}>
         <Mapa puntos={{ carabineros: markerCarabinero, pdi: markerPDI }}></Mapa>
       </View>
