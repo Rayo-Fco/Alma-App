@@ -55,6 +55,15 @@ const InfoCheck = (props: Props) => {
         latitudeDelta: 0.015,
         longitudeDelta: 0.015
       }
+      const ContainerFoto = ()=>{
+          if(data.fotos.length > 0){
+            return(<Text style={styles.txtFoto} onPress={() => setImagen(true)}>{data.fotos.length > 0 ? "Ver foto" : ""}</Text>)
+          }
+          else
+          {
+            return(<View style={{marginTop:40,}}></View>)
+          }
+      }
 
 
 
@@ -146,10 +155,12 @@ const InfoCheck = (props: Props) => {
                 />
 
               </MapView>
-              <Text>Informacion</Text>
-              <Text>{data.info[0].numero_depto ? "Depto o Casa: " + data.info[0].numero_depto : ""}</Text>
-              <Text>{data.info[0].extra ? "Extra: " + data.info[0].extra : ""}</Text>
-              <Text onPress={() => setImagen(true)}>{data.fotos.length > 0 ? "Ver foto" : ""}</Text>
+              <Text style={styles.txtTituloInfo}>Informacion</Text>
+              <View>
+              <Text style={styles.txtInfo}>{data.info[0].numero_depto ? "Numero Depto o Casa: " + data.info[0].numero_depto : ""}</Text>
+              <Text style={styles.txtInfo}>{data.info[0].extra ? "Extra: " + data.info[0].extra : ""}</Text>
+              </View>
+              <ContainerFoto/>
 
               <Overlay
                 isVisible={imagen}
@@ -164,10 +175,17 @@ const InfoCheck = (props: Props) => {
                     transition={true}
                     containerStyle={{ backgroundColor: "#fff" }}
                   />
-                  <Button title="Cerrar" onPress={() => setImagen(!imagen)}></Button>
+                  <View style={{width:"100%", alignItems:"center"}}>
+                    <TouchableHighlight style={styles.btnCerrar} onPress={() => setImagen(!imagen)}>
+                        <Text style={styles.txtCerrar}>Cerrar</Text>
+                    </TouchableHighlight>
+                  </View>
                 </View>
               </Overlay>
-              <Button title="Cerrar" onPress={prueba} />
+              <TouchableHighlight style={styles.btnCerrar} onPress={prueba}>
+                  <Text style={styles.txtCerrar}>Cerrar</Text>
+              </TouchableHighlight>
+              
             </View>
           </Overlay>
         )

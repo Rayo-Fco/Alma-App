@@ -22,7 +22,9 @@ import * as Location from 'expo-location';
 import * as BackgroundFetch from "expo-background-fetch"
 import * as TaskManager from "expo-task-manager"
 import ContactoSeguridad from '../Seguimiento';
+import { LogBox } from 'react-native';
 
+LogBox.ignoreLogs(['Setting a timer']);
 const header = require('../../../assets/Header-Background.png')
 
 
@@ -65,6 +67,7 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
     await AsyncStorage.getItem('@storage_Alma_help').then(async (response) => {
       if (response) {
         let data = JSON.parse(response)
+        console.log(response);
         let tiempo = new Date(Date.now()).getTime()
         if (((tiempo - data.time) / 1000 / 60 / 60) < 8) {
           let token2 = ""
@@ -101,7 +104,9 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
           }
         }
         else {
+          console.log("entro");
           setTokenHelp(false)
+          await AsyncStorage.removeItem('@storage_Alma_help')
         }
 
       }
@@ -156,13 +161,13 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
   }
 
   useEffect(() => {
-    if (navigation.isFocused()) {
       setInterval(() => {
         console.log();
         Validar()
       }, 3 * 1000 * 60);
-    }
+    
   }, []);
+
 
   useEffect(() => {
 
@@ -199,7 +204,11 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
         CerrarSession("No se puede Alma por no tener los permisos", true)
       }
     }
-    prueba()
+    prueba().catch(()=>{
+       console.log("Error en BackGround, problema iphone");
+       Validar()
+      
+      })
   })
 
   TaskManager.defineTask("PrimeraTarea", (data: any) => {

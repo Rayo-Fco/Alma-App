@@ -28,15 +28,6 @@ const Help = (props:Props) => {
     const [activo,setActivo] = useState(false)
     
     const Salir = async() =>{
-       /*  try {
-            await AsyncStorage.removeItem('@storage_Alma_help')
-            console.log("Funcuina");
-          } 
-          catch(e) 
-          {
-            console.log("Error remover");
-          }
-        setTokenHelp(!TokenHelp) */
         setActivo(!activo)
         console.log(TokenHelp);
     }
@@ -45,6 +36,7 @@ const Help = (props:Props) => {
         console.log("Ayuda!");
         try {
             const jsonValue = await AsyncStorage.getItem('@storage_Alma_help')
+            console.log(jsonValue);
             if (!jsonValue) {
                 let help={
                     alerta:true,
@@ -100,6 +92,36 @@ const Help = (props:Props) => {
                   })
                   
               }
+              else
+              {
+            setTokenHelp(true)
+            await Location.getLastKnownPositionAsync().then(async (data) => {
+              let position = {
+                latitude: '0',
+                longitude: ''
+              }
+              if (data) {
+                position = {
+                  latitude: data.coords.latitude.toString(),
+                  longitude: data.coords.longitude.toString()
+                }
+              }
+
+
+              let bearer = "Bearer " + token
+
+              await api.post('/helpSOS', position,
+                {
+                  headers:
+                  {
+                    Authorization: bearer,
+                  }
+                })
+            }).catch((err) => {
+              console.log("ERROR:");
+              console.log(err);
+            })
+              }
           }
           catch (e) {
             
@@ -143,9 +165,12 @@ const Help = (props:Props) => {
 
     return (
         <>
-            <TouchableHighlight underlayColor='#F00' style={TokenHelp? styles.btnSOSActivo: styles.btnSOS} onPress={() => setActivo(!activo)}>
-                <Text style={styles.txtSOS}>SOS</Text>
+            <View style={styles.constainerbtnSOS}>
+            <TouchableHighlight underlayColor='#F00' style={TokenHelp? styles.btnSOSActivo: styles.btnSOS} onPress={() => { console.log("Entro"); ;setActivo(!activo)}}>
+                <Text style={styles.txtSOS} onPress={() => { console.log("Entro"); ;setActivo(!activo)}}>SOS</Text>
             </TouchableHighlight>
+            </View>
+            
             <Container />
             <Loading isVisible={loading} text={"Cargando..."}></Loading>
         </>
