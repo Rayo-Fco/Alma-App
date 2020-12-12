@@ -79,7 +79,29 @@ const styles = StyleSheet.create({
   },
   IcoPassword:{
     color: "#FC8EED",marginTop:30
-  }
+  },
+  TextRecuperar:{
+    marginTop:60,
+    fontSize:17,
+    fontFamily: 'Roboto_300Light_Italic',
+    color:"blue",
+    textDecorationLine:"underline"
+  },
+  overlay: {
+    height: "40%",
+    width: "90%",
+    backgroundColor: "#fff",
+    borderColor: "#FC5CE7",
+    borderWidth: 2,
+    borderRadius: 5,
+  },
+  view: {
+    borderRadius: 10,
+    padding:20,
+    backgroundColor:"#FFF",
+    flex: 1,
+    alignItems: "center",
+  },
 
 });
 

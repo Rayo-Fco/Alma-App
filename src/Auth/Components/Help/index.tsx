@@ -130,6 +130,49 @@ const Help = (props:Props) => {
         
     }
 
+    const Ayudame2 = async()=>{
+          await Location.getLastKnownPositionAsync().then(async (data) => {
+            let position = {
+              latitude: '0',
+              longitude: ''
+            }
+            if (data) {
+              position = {
+                latitude: data.coords.latitude.toString(),
+                longitude: data.coords.longitude.toString()
+              }
+            }
+
+
+            let bearer = "Bearer " + token
+
+            await api.post('/helpSOS', position,
+              {
+                headers:
+                {
+                  Authorization: bearer,
+                }
+              })
+          }).then(()=>{
+            setTokenHelp(true)
+          }).catch((err) => {
+            if (err.response.data == "Unauthorized") {
+              Valido(false)
+            }
+              if (!err.response || err.response.data == "Unauthorized") {
+                return Alert.alert('Contactar a Soporte de Alma')
+              }
+              else {
+                let error: [{ message: string }] = err.response.data.error
+                let err2 = ""
+                error.map((err) => {
+                  err2 = err2 + "\n* " + err.message
+                })
+                Alert.alert("Error", err2)
+              }
+          })
+    }
+
 
 
     const Container = () => {
@@ -146,7 +189,7 @@ const Help = (props:Props) => {
             return(
                 <View style={styles.container}>
                     <Text style={styles.txtTitulo}>¡Ayudame!</Text>
-                        <Text style={styles.txtSOSActivo}>Alerta Gernerada!!</Text>
+                        <Text style={styles.txtSOSActivo}>Alerta Generada!!</Text>
                     <Text style={styles.txtSalir} onPress={Salir} >Salir</Text>
                 </View>
             )
@@ -154,7 +197,7 @@ const Help = (props:Props) => {
             return(
                 <View style={styles.container}>
                     <Text style={styles.txtTitulo}>¡Ayudame!</Text>
-                    <TouchableHighlight underlayColor='#F00' style={styles.btnAyuda} onPress={Ayudame}>
+                    <TouchableHighlight underlayColor='#F00' style={styles.btnAyuda} onPress={Ayudame2}>
                         <Text style={styles.txtSOS}>Pedir Ayuda</Text>
                     </TouchableHighlight>
                     <Text style={styles.txtSalir} onPress={Salir} >Salir</Text>

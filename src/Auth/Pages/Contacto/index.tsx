@@ -69,7 +69,7 @@ const Seguimiento = ({ route, navigation }: HomeNavigationProps<"Contacto">) => 
   }
 
   const getData = async () => {
-    setLoading(!loading)
+    setLoading(true)
     await api.get('/safecontact', {
       headers:
       {
@@ -81,6 +81,7 @@ const Seguimiento = ({ route, navigation }: HomeNavigationProps<"Contacto">) => 
       setLoading(false)
       setData(response.data)
     }).catch(()=>{
+      setLoading(false)
       console.log("Cathc");
     })
   }
@@ -338,7 +339,7 @@ const Seguimiento = ({ route, navigation }: HomeNavigationProps<"Contacto">) => 
               <View style={styles.overlay2}>
                 <Text style={styles.txtTitulo}>Agregar Contacto</Text>
                 <View style={styles.ContainerInput}>
-                  <Text style={styles.TextInput}>Aleas:</Text>
+                  <Text style={styles.TextInput}>Nombre:</Text>
                   <TextInput
                     placeholder={'Nombre'}
                     placeholderTextColor={'#FC8EED'}

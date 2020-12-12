@@ -63,6 +63,28 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
     }
   }
 
+  const getHelp = async () => {
+    await api.get('/helpSOS/valid', {
+      headers:
+      {
+        Authorization: "Bearer " + token
+      }
+    }).then((response) => {
+      console.log(response.data);
+      if(response.data === false)
+      {
+        setTokenHelp(false)
+      }
+      else
+      {
+        setTokenHelp(true)
+      }
+    }).catch((err) => {
+      setTokenHelp(false)
+      console.log(err)
+    })
+  }
+
   const Validar = async () => {
     await AsyncStorage.getItem('@storage_Alma_help').then(async (response) => {
       if (response) {
@@ -123,6 +145,41 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
 
   }
 
+  const Validar_Alerta = async() =>{
+      console.log("entro validar");
+      if(tokenhelp)
+      {
+        console.log("entro token");
+        await Location.getLastKnownPositionAsync().then(async (data) => {
+          let position = {
+            latitude: '0',
+            longitude: ''
+          }
+          if (data) {
+            position = {
+              latitude: data.coords.latitude.toString(),
+              longitude: data.coords.longitude.toString()
+            }
+          }
+
+
+          let bearer = "Bearer " + token
+
+          await api.post('/helpSOS', position,
+            {
+              headers:
+              {
+                Authorization: bearer,
+              }
+            })
+        }).catch((err) => {
+          setTokenHelp(false)
+          console.log("ERROR:");
+          console.log(err);
+        })
+      }
+  }
+
 
 
   const CerrarSession = (error: string, mensaje: boolean) => {
@@ -163,7 +220,7 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
   useEffect(() => {
       setInterval(() => {
         console.log();
-        Validar()
+        Validar_Alerta()
       }, 3 * 1000 * 60);
     
   }, []);
@@ -187,7 +244,8 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
     if (token != "") {
       getCarabinero()
       getPDI()
-      Validar()
+      getHelp()
+      Validar_Alerta()
     }
 
   }, [token])
@@ -206,7 +264,7 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
     }
     prueba().catch(()=>{
        console.log("Error en BackGround, problema iphone");
-       Validar()
+       Validar_Alerta()
       
       })
   })
@@ -214,7 +272,7 @@ const Inicio = ({ route, navigation }: HomeNavigationProps<"Inicio">) => {
   TaskManager.defineTask("PrimeraTarea", (data: any) => {
     if (data) {
       setInterval(() => {
-        Validar()
+        Validar_Alerta()
         console.log("entro segundo plano");
       }, 5 * 1000 * 60);
 
